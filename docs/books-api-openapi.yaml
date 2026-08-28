@@ -1,0 +1,163 @@
+openapi: 3.0.3
+info:
+  title: Books Scraping API REST
+  version: 1.0.0
+  description: API REST creada a partir de los 1.000 libros extraídos de Books to Scrape.
+  contact:
+    name: Araceli Fradejas Muñoz
+servers:
+  - url: http://localhost:5050
+    description: Servidor local
+tags:
+  - name: Estado
+  - name: Libros
+paths:
+  /api:
+    get:
+      tags: [Estado]
+      summary: Comprobar que la API está disponible
+      responses:
+        "200":
+          description: API disponible
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatusResponse"
+  /api/books:
+    get:
+      tags: [Libros]
+      summary: Listar libros con paginación y filtros
+      parameters:
+        - { name: page, in: query, schema: { type: integer, minimum: 1, default: 1 } }
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 100, default: 20 } }
+        - { name: name, in: query, schema: { type: string }, example: light }
+        - { name: minPrice, in: query, schema: { type: number, minimum: 0 }, example: 10 }
+        - { name: maxPrice, in: query, schema: { type: number, minimum: 0 }, example: 30 }
+        - { name: rating, in: query, schema: { type: integer, minimum: 1, maximum: 5 }, example: 4 }
+      responses:
+        "200":
+          description: Página de libros
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookListResponse"
+    post:
+      tags: [Libros]
+      summary: Crear un libro para probar el CRUD
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookInput"
+            example:
+              name: Libro de prueba desde Insomnia
+              price: 19.99
+              currency: GBP
+              image: https://books.toscrape.com/media/insomnia-test.jpg
+              url: https://books.toscrape.com/catalogue/prueba-insomnia-araceli/index.html
+              availability: In stock
+              rating: 4
+      responses:
+        "201": { description: Libro creado }
+        "400": { description: Datos no válidos }
+        "409": { description: La URL ya existe }
+  /api/books/stats:
+    get:
+      tags: [Libros]
+      summary: Consultar estadísticas de los libros
+      responses:
+        "200":
+          description: Totales, precios y distribución de valoraciones
+  /api/books/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Identificador devuelto al crear o consultar un libro
+        schema: { type: string }
+        example: 507f1f77bcf86cd799439011
+    get:
+      tags: [Libros]
+      summary: Consultar un libro por ID
+      responses:
+        "200": { description: Libro encontrado }
+        "400": { description: ID no válido }
+        "404": { description: Libro no encontrado }
+    put:
+      tags: [Libros]
+      summary: Actualizar un libro por ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookUpdate"
+            example:
+              price: 21.5
+              rating: 5
+      responses:
+        "200": { description: Libro actualizado }
+        "400": { description: Datos o ID no válidos }
+        "404": { description: Libro no encontrado }
+    delete:
+      tags: [Libros]
+      summary: Eliminar el libro de prueba
+      responses:
+        "200": { description: Libro eliminado }
+        "400": { description: ID no válido }
+        "404": { description: Libro no encontrado }
+components:
+  schemas:
+    BookInput:
+      type: object
+      required: [name, price, image, url, availability, rating]
+      properties:
+        name: { type: string }
+        price: { type: number, minimum: 0 }
+        currency: { type: string, enum: [GBP], default: GBP }
+        image: { type: string, format: uri }
+        url: { type: string, format: uri }
+        availability: { type: string }
+        rating: { type: integer, minimum: 1, maximum: 5 }
+    BookUpdate:
+      type: object
+      properties:
+        name: { type: string }
+        price: { type: number, minimum: 0 }
+        currency: { type: string, enum: [GBP] }
+        image: { type: string, format: uri }
+        url: { type: string, format: uri }
+        availability: { type: string }
+        rating: { type: integer, minimum: 1, maximum: 5 }
+    Book:
+      allOf:
+        - $ref: "#/components/schemas/BookInput"
+        - type: object
+          properties:
+            _id: { type: string }
+            source: { type: string, example: Books to Scrape }
+            createdAt: { type: string, format: date-time }
+            updatedAt: { type: string, format: date-time }
+    Pagination:
+      type: object
+      properties:
+        page: { type: integer }
+        limit: { type: integer }
+        total: { type: integer }
+        totalPages: { type: integer }
+    BookListResponse:
+      type: object
+      properties:
+        success: { type: boolean }
+        data:
+          type: array
+          items: { $ref: "#/components/schemas/Book" }
+        pagination: { $ref: "#/components/schemas/Pagination" }
+    StatusResponse:
+      type: object
+      properties:
+        success: { type: boolean, example: true }
+        message: { type: string, example: Books API REST disponible }
+        source: { type: string, example: Books to Scrape }
+        version: { type: string, example: 1.0.0 }

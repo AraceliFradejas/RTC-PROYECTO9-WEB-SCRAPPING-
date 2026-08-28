@@ -240,6 +240,7 @@ He almacenado las capturas en `screenshots/` siguiendo la [guía de evidencias](
 | 6 | Primeros objetos de `products.json` | `06-products-inicio.png` | Completada |
 | 7 | Último objeto de `products.json` | `07-products-final.png` | Completada |
 | 8 | Cuatro pruebas superadas | `08-pruebas.png` | Completada |
+| 9 | Conexión de la API con MongoDB Atlas | `09-mongodb-conexion-terminal.png` | Completada |
 
 ### 12.1. Web seleccionada
 
@@ -289,7 +290,13 @@ El test runner confirma cuatro pruebas superadas y ningún fallo.
 
 ![Resultado de npm test con cuatro pruebas superadas](../screenshots/08-pruebas.png)
 
-Estas ocho capturas documentan la fase de scraping. Las evidencias de MongoDB Atlas e Insomnia se incorporarán en la ampliación del proyecto cuando la API esté implementada y probada.
+### 12.9. Conexión con MongoDB Atlas
+
+La terminal confirma que la API se conecta a la base de datos `books-scraping` y queda disponible en el puerto 5050. En la captura mantengo visible únicamente `.env.example`, sin mostrar las credenciales reales.
+
+![Conexión de la API con MongoDB Atlas desde la terminal](../screenshots/09-mongodb-conexion-terminal.png)
+
+Las ocho primeras capturas documentan el scraping y la novena inicia las evidencias de la ampliación con MongoDB y API REST.
 
 ## 13. Dificultades y decisiones
 

@@ -14,6 +14,7 @@ En esta carpeta he guardado las capturas reales del proyecto. No he modificado l
 | `06-products-inicio.png` | Los primeros objetos del JSON y sus campos |
 | `07-products-final.png` | El último objeto y el cierre correcto del array JSON |
 | `08-pruebas.png` | El resultado completo de `npm test` con 4 pruebas superadas |
+| `09-mongodb-conexion-terminal.png` | La conexión correcta de la API con MongoDB Atlas |
 
 ## Criterios para las capturas
 
@@ -23,4 +24,4 @@ En esta carpeta he guardado las capturas reales del proyecto. No he modificado l
 - He conservado el contexto necesario de cada comprobación.
 - He incorporado textos alternativos descriptivos en la memoria.
 
-MongoDB Atlas e Insomnia no forman parte de las evidencias actuales porque este proyecto no incorpora una base de datos ni un CRUD.
+Las siguientes capturas documentarán las consultas realizadas en Insomnia sobre el CRUD.
