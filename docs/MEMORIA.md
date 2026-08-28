@@ -361,6 +361,8 @@ He completado la ampliación funcional con Express, Mongoose, dotenv, CORS, Morg
 
 La API ofrece el CRUD completo, paginación y filtros por nombre, precio y valoración. También he añadido una consulta estadística que, sobre la colección real, devuelve 1.000 libros, precios entre 10 y 59,99 GBP y un precio medio de 35,07 GBP. Las pruebas automáticas cubren el estado de la API, los errores 404, el modelo, la construcción de filtros y la validación de los datos.
 
+Para verificar el CRUD completo he creado un registro temporal, lo he actualizado, lo he consultado por su identificador y lo he eliminado. Los códigos obtenidos han sido `201` en la creación y `200` en las demás operaciones. Después de borrarlo, la consulta estadística ha confirmado que la colección volvía a contener exactamente 1.000 libros.
+
 He utilizado el puerto 5050 porque macOS puede reservar el 5000 para AirPlay. Las evidencias de MongoDB Atlas e Insomnia se incorporarán tras realizar las comprobaciones visuales finales.
 
 ## 17. Conclusión

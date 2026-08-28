@@ -57,7 +57,10 @@ export const createBook = async (request, response) => {
 
 export const updateBook = async (request, response) => {
   ensureValidId(request.params.id);
-  const book = await Book.findByIdAndUpdate(request.params.id, selectBookData(request.body), { new: true, runValidators: true });
+  const book = await Book.findByIdAndUpdate(request.params.id, selectBookData(request.body), {
+    returnDocument: "after",
+    runValidators: true
+  });
   if (!book) return response.status(404).json({ success: false, message: "Libro no encontrado" });
   return response.status(200).json({ success: true, data: book });
 };
