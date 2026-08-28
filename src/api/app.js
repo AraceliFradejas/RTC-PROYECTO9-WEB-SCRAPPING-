@@ -3,6 +3,7 @@ import express from "express";
 import morgan from "morgan";
 import { errorHandler } from "./middleware/errorHandler.js";
 import { notFoundHandler } from "./middleware/notFoundHandler.js";
+import { bookRouter } from "./routes/bookRoutes.js";
 
 export const app = express();
 
@@ -19,6 +20,8 @@ app.get("/api", (_request, response) => {
     version: "1.0.0"
   });
 });
+
+app.use("/api/books", bookRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

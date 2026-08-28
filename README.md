@@ -212,7 +212,28 @@ npm test
 La ampliación de la API se inicia después de configurar `MONGODB_URI`:
 
 ```bash
+npm run seed
 npm run api
+```
+
+La semilla carga los 1.000 libros sin duplicarlos y la API queda disponible en `http://localhost:5050/api`.
+
+### Endpoints de la API
+
+| Método | Ruta | Función |
+|---|---|---|
+| GET | `/api` | Comprobar el estado de la API |
+| GET | `/api/books` | Listar y paginar los libros |
+| GET | `/api/books/stats` | Consultar estadísticas generales |
+| GET | `/api/books/:id` | Obtener un libro por su identificador |
+| POST | `/api/books` | Crear un libro |
+| PUT | `/api/books/:id` | Actualizar un libro |
+| DELETE | `/api/books/:id` | Eliminar un libro |
+
+La consulta general acepta `page`, `limit`, `name`, `minPrice`, `maxPrice` y `rating`. Por ejemplo:
+
+```text
+http://localhost:5050/api/books?page=1&limit=20&minPrice=10&maxPrice=30&rating=4
 ```
 
 Durante el desarrollo puedo utilizar el modo de recarga automática incluido en Node.js:
@@ -227,11 +248,21 @@ npm run dev
 .
 ├── src/
 │   ├── api/
+│   │   ├── controllers/
+│   │   │   └── bookController.js
 │   │   ├── config/
 │   │   │   └── database.js
 │   │   ├── middleware/
 │   │   │   ├── errorHandler.js
 │   │   │   └── notFoundHandler.js
+│   │   ├── models/
+│   │   │   └── Book.js
+│   │   ├── routes/
+│   │   │   └── bookRoutes.js
+│   │   ├── seeds/
+│   │   │   └── seedBooks.js
+│   │   ├── utils/
+│   │   │   └── bookQuery.js
 │   │   ├── app.js
 │   │   └── server.js
 │   ├── config/

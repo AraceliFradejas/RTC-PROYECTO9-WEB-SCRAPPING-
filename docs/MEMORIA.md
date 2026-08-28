@@ -357,7 +357,11 @@ No utilizaré Cloudinary para las portadas. Las imágenes ya tienen URLs absolut
 
 ### Estado
 
-En esta versión he preparado la base de la ampliación: Express, Mongoose, dotenv, CORS, Morgan, conexión desacoplada, ruta de estado y middlewares de errores. La aplicación cuenta con pruebas de la respuesta `200` de `/api` y del error `404` para rutas inexistentes. También he creado el modelo `Book`, con validaciones para sus campos, y una semilla idempotente que carga los 1.000 registros de `products.json` sin generar duplicados al ejecutarla varias veces. El CRUD, los filtros y las evidencias se incorporarán en los siguientes hitos.
+He completado la ampliación funcional con Express, Mongoose, dotenv, CORS, Morgan, conexión desacoplada, middlewares de errores y el modelo `Book`. La semilla carga los 1.000 registros de `products.json` y, al repetirla, informa de 0 creados, 0 modificados y 1.000 documentos totales.
+
+La API ofrece el CRUD completo, paginación y filtros por nombre, precio y valoración. También he añadido una consulta estadística que, sobre la colección real, devuelve 1.000 libros, precios entre 10 y 59,99 GBP y un precio medio de 35,07 GBP. Las pruebas automáticas cubren el estado de la API, los errores 404, el modelo, la construcción de filtros y la validación de los datos.
+
+He utilizado el puerto 5050 porque macOS puede reservar el 5000 para AirPlay. Las evidencias de MongoDB Atlas e Insomnia se incorporarán tras realizar las comprobaciones visuales finales.
 
 ## 17. Conclusión
 

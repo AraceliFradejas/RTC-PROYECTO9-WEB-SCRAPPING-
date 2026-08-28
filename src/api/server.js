@@ -2,7 +2,7 @@ import "dotenv/config";
 import { app } from "./app.js";
 import { connectDatabase, disconnectDatabase } from "./config/database.js";
 
-const port = Number.parseInt(process.env.PORT ?? "5000", 10);
+const port = Number.parseInt(process.env.PORT ?? "5050", 10);
 let server;
 
 const startServer = async () => {
