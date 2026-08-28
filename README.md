@@ -4,7 +4,7 @@ Proyecto académico de web scraping del **Módulo 5: Backend [Node | Mongo | API
 
 En este proyecto voy a desarrollar un scraper con Node.js y Puppeteer capaz de recorrer todas las páginas del catálogo de [Books to Scrape](https://books.toscrape.com/), obtener todos sus libros y guardar los resultados en un archivo llamado `products.json`.
 
-> **Estado del proyecto:** primera extracción funcional completada. El scraper obtiene y valida los 20 libros de la página inicial; la paginación se incorporará en el siguiente hito.
+> **Estado del proyecto:** scraper paginado completado y verificado con 1.000 productos extraídos de 50 páginas.
 
 ## Motivación
 
@@ -54,7 +54,7 @@ Como mejora, estudiaré la incorporación de otros datos disponibles que aporten
 
 La estructura definitiva dependerá de las comprobaciones realizadas durante el desarrollo. No incorporaré datos adicionales si no puedo extraerlos y validarlos de forma consistente.
 
-## Resultado esperado
+## Estructura del resultado
 
 El archivo `products.json` tendrá una estructura similar a la siguiente:
 
@@ -67,25 +67,26 @@ El archivo `products.json` tendrá una estructura similar a la siguiente:
     "image": "https://books.toscrape.com/media/cache/...",
     "url": "https://books.toscrape.com/catalogue/...",
     "availability": "In stock",
-    "rating": 3,
-    "category": "Poetry"
+    "rating": 3
   }
 ]
 ```
 
-Este ejemplo representa el formato previsto y no constituye todavía una evidencia de la ejecución del scraper.
+Este ejemplo reproduce la estructura real generada. La categoría permanece como una posible mejora porque no aparece en las tarjetas del listado y obtenerla exigiría visitar individualmente las 1.000 fichas.
 
-### Primer resultado verificado
+### Resultado verificado
 
-La primera versión funcional procesa una sola página antes de incorporar la paginación completa. La ejecución actual ha producido los siguientes resultados:
+La ejecución completa ha producido los siguientes resultados:
 
-- 1 página visitada;
-- 20 productos extraídos;
+- 50 páginas visitadas;
+- 1.000 productos extraídos;
 - 0 productos con campos obligatorios incompletos;
 - 0 URLs de producto duplicadas;
-- 0 elementos superpuestos encontrados en la página durante la prueba.
+- 0 URLs de imagen inválidas;
+- 0 valoraciones fuera del rango de 1 a 5;
+- 0 elementos superpuestos encontrados durante el recorrido del catálogo.
 
-Esta comprobación intermedia me permite validar los selectores y la limpieza de los datos antes de repetir el proceso sobre las 50 páginas del catálogo.
+El scraper no contiene el número 50 como límite. Después de procesar cada listado busca el enlace `Next`, obtiene su URL y continúa mientras ese enlace exista. En la última página no encuentra el enlace y finaliza el bucle.
 
 ## Enfoque de desarrollo
 
@@ -215,7 +216,11 @@ En esta primera implementación he aprendido a iniciar Chromium desde Puppeteer,
 
 También he comprobado que los datos visibles no siempre tienen el formato adecuado para guardarlos. He eliminado el símbolo monetario para convertir el precio en un número, he transformado las rutas relativas en URLs absolutas y he normalizado los espacios de la disponibilidad. Antes de escribir el JSON valido que todos los productos tengan los campos obligatorios.
 
-Por último, he incorporado un bloque `finally` para cerrar el navegador tanto si la extracción termina correctamente como si se produce un error. En el siguiente hito ampliaré este aprendizaje con la detección de la página siguiente y el recorrido completo del catálogo.
+Por último, he incorporado un bloque `finally` para cerrar el navegador tanto si la extracción termina correctamente como si se produce un error.
+
+Al incorporar la paginación he aprendido a controlar un bucle mediante la propia estructura de la web. Después de cada extracción busco el enlace `Next`: si existe, continúo con su URL; si no existe, el proceso ha llegado al final. De esta manera no dependo de conocer previamente el número de páginas.
+
+También he añadido un conjunto de URLs visitadas para detectar un posible ciclo de navegación, una pausa breve entre peticiones y una validación final de URLs duplicadas. He decidido escribir `products.json` solamente después de completar y validar todo el catálogo, evitando guardar como resultado definitivo una extracción parcial.
 
 ## Autora
 

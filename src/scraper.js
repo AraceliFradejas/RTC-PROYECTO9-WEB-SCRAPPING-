@@ -1,9 +1,11 @@
 import { writeFile } from "node:fs/promises";
+import { setTimeout as delay } from "node:timers/promises";
 import puppeteer from "puppeteer";
 
 const START_URL = "https://books.toscrape.com/";
 const OUTPUT_FILE = new URL("../products.json", import.meta.url);
 const PRODUCT_SELECTOR = "article.product_pod";
+const REQUEST_DELAY_MS = 250;
 
 const closeObstructions = async (page) => {
   const closeSelectors = [
@@ -65,6 +67,9 @@ const extractProducts = (page) =>
     });
   });
 
+const getNextPageUrl = (page) =>
+  page.$eval("li.next a", (link) => link.href).catch(() => null);
+
 const validateProducts = (products) => {
   if (products.length === 0) {
     throw new Error("No se ha encontrado ningún producto en la página.");
@@ -81,6 +86,13 @@ const validateProducts = (products) => {
   if (invalidProduct) {
     throw new Error(`Se ha encontrado un producto incompleto: ${invalidProduct.name || "sin nombre"}`);
   }
+
+  const productUrls = products.map((product) => product.url);
+  const uniqueUrls = new Set(productUrls);
+
+  if (uniqueUrls.size !== productUrls.length) {
+    throw new Error("Se han encontrado productos duplicados en la extracción.");
+  }
 };
 
 const saveProducts = (products) =>
@@ -96,21 +108,49 @@ const scrape = async () => {
     const page = await browser.newPage();
     await page.setViewport({ width: 1440, height: 900 });
 
-    console.log(`🌐 Visitando ${START_URL}`);
-    await page.goto(START_URL, {
-      waitUntil: "domcontentloaded",
-      timeout: 30_000
-    });
-    await page.waitForSelector(PRODUCT_SELECTOR, { timeout: 10_000 });
+    const products = [];
+    const visitedPages = new Set();
+    let currentUrl = START_URL;
+    let pageNumber = 0;
+    let totalClosedElements = 0;
 
-    const closedElements = await closeObstructions(page);
-    console.log(`🧹 Elementos superpuestos cerrados: ${closedElements}`);
+    while (currentUrl) {
+      if (visitedPages.has(currentUrl)) {
+        throw new Error(`Se ha detectado un ciclo de paginación en ${currentUrl}`);
+      }
 
-    const products = await extractProducts(page);
+      visitedPages.add(currentUrl);
+      pageNumber += 1;
+      console.log(`🌐 Página ${pageNumber}: ${currentUrl}`);
+
+      await page.goto(currentUrl, {
+        waitUntil: "domcontentloaded",
+        timeout: 30_000
+      });
+      await page.waitForSelector(PRODUCT_SELECTOR, { timeout: 10_000 });
+
+      totalClosedElements += await closeObstructions(page);
+
+      const pageProducts = await extractProducts(page);
+      products.push(...pageProducts);
+      console.log(
+        `   └─ ${pageProducts.length} productos | acumulados: ${products.length}`
+      );
+
+      currentUrl = await getNextPageUrl(page);
+
+      if (currentUrl) {
+        await delay(REQUEST_DELAY_MS);
+      }
+    }
+
     validateProducts(products);
     await saveProducts(products);
 
-    console.log(`✅ Productos extraídos de la primera página: ${products.length}`);
+    console.log("");
+    console.log(`✅ Páginas procesadas: ${pageNumber}`);
+    console.log(`✅ Productos extraídos: ${products.length}`);
+    console.log(`🧹 Elementos superpuestos cerrados: ${totalClosedElements}`);
     console.log("💾 Resultados guardados en products.json");
   } catch (error) {
     console.error("❌ No se ha podido completar la extracción:", error.message);
