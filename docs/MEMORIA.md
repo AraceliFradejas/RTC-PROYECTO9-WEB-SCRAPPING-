@@ -401,7 +401,7 @@ La ampliación me ha ayudado a comprender el recorrido completo del dato: extrac
 
 Tras completar y verificar el scraper, he decidido utilizar sus resultados para continuar practicando MongoDB y API REST con un conjunto diferente y más voluminoso de datos.
 
-Esta ampliación parte de mi experiencia en APIs anteriores inspiradas en Taylor Swift. En el proyecto sobre *The Eras Tour* trabajé con 149 conciertos y 238 canciones relacionadas. Los 1.000 libros actuales me permitirán observar el funcionamiento de una semilla idempotente, las consultas paginadas y los filtros sobre una colección de mayor tamaño.
+Esta ampliación parte de mi experiencia en APIs anteriores inspiradas en Taylor Swift. En el proyecto sobre *The Eras Tour* trabajé con 149 conciertos y 238 canciones relacionadas. Con los 1.000 libros actuales he observado el funcionamiento de una semilla idempotente, las consultas paginadas y los filtros sobre una colección de mayor tamaño.
 
 ### Objetivos de la ampliación
 
@@ -417,9 +417,9 @@ Esta ampliación parte de mi experiencia en APIs anteriores inspiradas en Taylor
 
 ### Integración con el scraping
 
-`products.json` seguirá siendo la salida obligatoria del scraping y funcionará sin MongoDB. La base de datos consumirá ese archivo como fuente para su semilla, conectando ambas fases sin acoplar su ejecución.
+Mantuve `products.json` como salida obligatoria del scraping y su funcionamiento independiente de MongoDB. Utilicé ese archivo como fuente para la semilla, conectando ambas fases sin acoplar su ejecución.
 
-No utilizaré Cloudinary para las portadas. Las imágenes ya tienen URLs absolutas y volver a alojar 1.000 archivos aumentaría el consumo de recursos, duplicaría contenido ajeno y no aportaría valor al objetivo de esta práctica.
+Decidí no utilizar Cloudinary para las portadas. Las imágenes ya tienen URLs absolutas y volver a alojar 1.000 archivos habría aumentado el consumo de recursos, duplicado contenido ajeno y no habría aportado valor al objetivo de esta práctica.
 
 ### Estado
 

@@ -1,177 +1,28 @@
 # Books to Scrape · Web Scraping con Puppeteer
 
-Proyecto académico de web scraping del **Módulo 5: Backend [Node | Mongo | API REST]** del máster **Rock The Code** de **The Power Tech School**.
+He realizado este proyecto académico para el módulo de Backend con Node.js, MongoDB y API REST del máster Rock The Code de The Power Tech School.
 
-En este proyecto he desarrollado un scraper con Node.js y Puppeteer capaz de recorrer todas las páginas del catálogo de [Books to Scrape](https://books.toscrape.com/), obtener todos sus libros y guardar los resultados en un archivo llamado `products.json`.
+En este repositorio he reunido la solución completa del ejercicio: scraping paginado con Puppeteer, exportación a `products.json`, validación de datos y ampliación a una API REST conectada a MongoDB Atlas.
 
-[Memoria técnica y evidencias](docs/MEMORIA.md) · [Guía de capturas](screenshots/README.md) · [Repositorio](https://github.com/AraceliFradejas/RTC-PROYECTO9-WEB-SCRAPPING-)
+[Memoria técnica](docs/MEMORIA.md) · [Guía de capturas](screenshots/README.md) · [Repositorio](https://github.com/AraceliFradejas/RTC-PROYECTO9-WEB-SCRAPPING-) · [English version](#english-version)
 
-> **Estado del proyecto:** scraper paginado completado y verificado con 1.000 productos extraídos de 50 páginas.
+> Estado del proyecto: finalizado y validado con 14 pruebas automatizadas superadas.
 
-## Motivación
+## Resumen
 
-Este proyecto continúa una línea de aprendizaje que comencé con [Advanced Web Extractor](https://github.com/AraceliFradejas/urls-testLDAAFM), una herramienta que desarrollé en Python para extraer contenido de numerosas páginas de Línea Directa y convertirlo en documentos Markdown y PDF destinados a una base de conocimiento.
+- Scraper con Puppeteer que recorre la paginación completa de Books to Scrape.
+- Extracción de nombre, precio, imagen y URL de cada producto.
+- Validación de productos obligatorios, duplicados y estructura de datos.
+- Generación del archivo `products.json` con 1.000 registros.
+- Carga de datos en MongoDB mediante semilla idempotente.
+- Exposición de un CRUD completo con Express y Mongoose.
+- Documentación de evidencias, pruebas y endpoints.
 
-En aquel proyecto trabajé con Playwright, BeautifulSoup, requests, pandas y WeasyPrint. Procesé URLs procedentes de distintas pestañas de un archivo Excel, ejecuté JavaScript, desplegué acordeones, activé pestañas y provoqué la carga diferida de contenido mediante desplazamiento. También incorporé control del progreso, tratamiento de errores y generación automatizada de documentos.
+## Motivación y contexto
 
-Para este nuevo proyecto he aplicado parte de aquel aprendizaje en un contexto diferente. En lugar de recopilar contenido documental desde una lista previa de URLs, he recorrido automáticamente un catálogo paginado. También he cambiado el entorno tecnológico: he utilizado JavaScript, Node.js y Puppeteer para generar un conjunto de datos JSON con una estructura uniforme.
+Este proyecto continúa el aprendizaje que inicié con [Advanced Web Extractor](https://github.com/AraceliFradejas/urls-testLDAAFM). En aquel trabajo utilicé Python para extraer contenido de distintas páginas de Línea Directa y transformarlo en documentos Markdown y PDF destinados a una base de conocimiento.
 
-Buscando una web con muchos productos, una paginación clara y una estructura estable, encontré Books to Scrape. Elegí esta página porque está preparada específicamente para practicar web scraping y contiene 1.000 libros distribuidos en 50 páginas. Su estructura me ha permitido comprobar visualmente los datos obligatorios del ejercicio y centrarme en comprender correctamente la navegación automatizada.
-
-## Objetivo principal
-
-Mi objetivo ha sido construir un scraper que:
-
-- abra Books to Scrape mediante Puppeteer;
-- detecte y cierre posibles modales o elementos que dificulten la navegación;
-- seleccione todos los productos mostrados en cada página;
-- extraiga, como mínimo, el nombre, el precio y la imagen de cada libro;
-- avance automáticamente a la siguiente página;
-- continúe hasta detectar el final del catálogo;
-- valide y normalice la información obtenida;
-- genere un archivo `products.json` con todos los resultados;
-- pueda ejecutarse mediante un comando sencillo definido en `package.json`.
-
-No he fijado manualmente el número de páginas que debe recorrer el scraper. La finalización depende de la existencia del enlace de página siguiente, de modo que el proceso pueda adaptarse si el catálogo cambia.
-
-## Datos extraídos
-
-Cada producto incluye los tres campos exigidos en el enunciado:
-
-| Campo | Descripción |
-| --- | --- |
-| `name` | Nombre completo del libro |
-| `price` | Precio normalizado como valor numérico |
-| `image` | URL absoluta de la imagen |
-
-Como mejora, he incorporado otros datos disponibles que aportan valor al resultado:
-
-| Campo | Descripción |
-| --- | --- |
-| `currency` | Moneda correspondiente al precio |
-| `url` | Dirección de la ficha del libro |
-| `availability` | Disponibilidad indicada en la web |
-| `rating` | Valoración del producto |
-| `category` | No incorporado: exige visitar cada ficha individual |
-
-He mantenido solamente los datos que puedo extraer y validar de forma consistente desde las tarjetas del listado.
-
-## Estructura del resultado
-
-El archivo `products.json` tiene una estructura como la siguiente:
-
-```json
-[
-  {
-    "name": "A Light in the Attic",
-    "price": 51.77,
-    "currency": "GBP",
-    "image": "https://books.toscrape.com/media/cache/...",
-    "url": "https://books.toscrape.com/catalogue/...",
-    "availability": "In stock",
-    "rating": 3
-  }
-]
-```
-
-Este ejemplo reproduce la estructura real generada. La categoría permanece como una posible mejora porque no aparece en las tarjetas del listado y obtenerla exigiría visitar individualmente las 1.000 fichas.
-
-### Resultado verificado
-
-La ejecución completa ha producido los siguientes resultados:
-
-- 50 páginas visitadas;
-- 1.000 productos extraídos;
-- 0 productos con campos obligatorios incompletos;
-- 0 URLs de producto duplicadas;
-- 0 URLs de imagen inválidas;
-- 0 valoraciones fuera del rango de 1 a 5;
-- 0 elementos superpuestos encontrados durante el recorrido del catálogo.
-
-El scraper no contiene el número 50 como límite. Después de procesar cada listado busca el enlace `Next`, obtiene su URL y continúa mientras ese enlace exista. En la última página no encuentra el enlace y finaliza el bucle.
-
-## Evidencias destacadas
-
-### Catálogo seleccionado
-
-![Página inicial de Books to Scrape con 1.000 resultados](screenshots/BooksToScrape1-Catalog-Overview.png)
-
-### Selectores de una tarjeta
-
-![HTML de una tarjeta con imagen, título, precio y disponibilidad](screenshots/Browser2-Product-Card-Inspection.png)
-
-### Recorrido completo
-
-![Resultado final del scraper con 50 páginas y 1.000 productos](screenshots/Terminal5-Scraper-Completed.png)
-
-### Archivo generado
-
-![Primeros objetos almacenados en products.json](screenshots/VSCode6-Products-JSON-Start.png)
-
-### Pruebas automáticas
-
-![Catorce pruebas superadas y cero fallos](screenshots/Terminal24-Final-Tests.png)
-
-## Enfoque de desarrollo
-
-He construido el proyecto de manera progresiva:
-
-1. Preparé el entorno de Node.js e instalé Puppeteer.
-2. Analicé el HTML de Books to Scrape y localicé selectores estables.
-3. Extraje primero los productos de una sola página.
-4. Normalicé nombres, precios, imágenes y enlaces.
-5. Incorporé la navegación automática por todas las páginas.
-6. Gestioné modales, esperas, errores de navegación y cierre del navegador.
-7. Validé campos obligatorios y posibles productos duplicados.
-8. Configuré la escritura de `products.json` al terminar la extracción.
-9. Documenté la ejecución y preparé el plan de evidencias reales.
-
-## Comparación con mi proyecto anterior
-
-| Advanced Web Extractor | Books to Scrape |
-| --- | --- |
-| Python | JavaScript y Node.js |
-| Playwright | Puppeteer |
-| URLs procedentes de Excel | Páginas descubiertas mediante paginación |
-| Contenido documental | Productos de un catálogo |
-| Salida en Markdown y PDF | Salida en JSON estructurado |
-| Acordeones, pestañas y *lazy loading* | Tarjetas de producto y enlace a la página siguiente |
-| Base de conocimiento para Copilot | Conjunto de datos reutilizable |
-
-## Mejoras incorporadas
-
-Además de los requisitos obligatorios, he incorporado las siguientes mejoras:
-
-- selectores centralizados para facilitar su mantenimiento;
-- separación de responsabilidades en archivos pequeños;
-- URLs absolutas para imágenes y fichas de producto;
-- precios almacenados como números;
-- prevención de duplicados;
-- validación de campos obligatorios;
-- mensajes de progreso por página;
-- resumen final de la ejecución;
-- cierre seguro del navegador aunque se produzca un error;
-- pruebas automáticas de la validación.
-
-Como mejora futura del scraper quedan los reintentos limitados ante errores recuperables. A partir del resultado ya verificado continúo el proyecto con una fase de persistencia y consulta de los datos.
-
-## Ampliación del proyecto: del scraping a una API REST
-
-Una vez terminado el objetivo obligatorio, he decidido completar el recorrido de los datos obtenidos. Esta ampliación conectará los 1.000 libros de `products.json` con los contenidos de MongoDB y API REST que he trabajado durante el módulo.
-
-En mis anteriores APIs inspiradas en Taylor Swift ya había gestionado volúmenes importantes de información. En el proyecto dedicado a *The Eras Tour* documenté 149 conciertos y 238 canciones relacionadas. Ahora quiero comprobar cómo se comportan una semilla, una colección de MongoDB y una API REST al trabajar con 1.000 productos procedentes directamente de un scraping.
-
-El scraper seguirá funcionando de forma independiente y `products.json` continuará siendo su salida obligatoria. Sobre ese resultado desarrollaré una segunda fase con los siguientes objetivos:
-
-- cargar `products.json` en MongoDB mediante una semilla idempotente, sin duplicar libros al repetirla;
-- evitar duplicados utilizando la URL original de cada libro;
-- crear un modelo `Book` con validaciones de Mongoose;
-- exponer un CRUD completo con Express;
-- incorporar paginación, filtros por nombre, precio y valoración;
-- ofrecer estadísticas generales del conjunto de libros;
-- documentar las pruebas con MongoDB Atlas e Insomnia.
-
-Mantendré las URLs originales de las imágenes y no las copiaré a Cloudinary. De esta manera evitaré duplicar 1.000 archivos ajenos y conservaré la procedencia de los datos.
+En esta ocasión quería practicar una navegación diferente. En lugar de partir de una lista cerrada de URLs, necesitaba descubrir cada página mediante la propia paginación. Buscando una web con muchos productos y una estructura fácil de comprobar, encontré Books to Scrape. La elegí porque está preparada para practicar scraping y contiene 1.000 libros distribuidos en 50 páginas.
 
 ## Tecnologías
 
@@ -187,9 +38,95 @@ Mantendré las URLs originales de las imágenes y no las copiaré a Cloudinary. 
 - JSON
 - Git y GitHub
 
-## Instalación y ejecución
+## Objetivo del proyecto
 
-Para preparar el proyecto en local necesito Node.js 18 o una versión posterior. Después de clonar el repositorio instalaré las dependencias declaradas en `package.json`:
+He organizado el ejercicio en dos fases:
+
+1. Web scraping y extracción estructurada de un catálogo paginado.
+2. Persistencia y consulta de esos datos en una base de datos y una API REST.
+
+Mi objetivo principal era automatizar la recogida de todos los productos del catálogo, evitar errores de navegación y dejar una salida fiable para su posterior uso.
+
+No he fijado manualmente el número de páginas. Después de extraer cada listado busco el enlace `Next`; si existe continúo con su URL y, si no existe, doy por terminada la extracción. También compruebo posibles elementos superpuestos, aunque la web no mostró ninguno durante la ejecución final.
+
+## Resultados verificados
+
+- 50 páginas recorridas
+- 1.000 productos extraídos
+- 0 productos incompletos
+- 0 URLs duplicadas
+- 0 validaciones fallidas en la colección final
+- 14 pruebas automatizadas superadas
+
+## Estructura de datos
+
+Cada producto se normaliza con estos campos:
+
+| Campo | Descripción |
+| --- | --- |
+| `name` | Nombre del libro |
+| `price` | Precio como valor numérico |
+| `image` | URL absoluta de la imagen |
+| `url` | Enlace a la ficha del producto |
+| `currency` | Moneda del precio |
+| `availability` | Disponibilidad indicada en la web |
+| `rating` | Valoración extraída desde el listado |
+
+Ejemplo de salida:
+
+```json
+[
+  {
+    "name": "A Light in the Attic",
+    "price": 51.77,
+    "currency": "GBP",
+    "image": "https://books.toscrape.com/media/cache/...",
+    "url": "https://books.toscrape.com/catalogue/...",
+    "availability": "In stock",
+    "rating": 3
+  }
+]
+```
+
+## Evidencias de la entrega
+
+### Scraping y validación
+
+![Catálogo inicial de Books to Scrape](screenshots/BooksToScrape1-Catalog-Overview.png)
+
+![Detalle de un producto y selectores del HTML](screenshots/Browser2-Product-Card-Inspection.png)
+
+![Final del recorrido paginado](screenshots/Terminal5-Scraper-Completed.png)
+
+![Primeros registros en products.json](screenshots/VSCode6-Products-JSON-Start.png)
+
+![Pruebas finales superadas](screenshots/Terminal24-Final-Tests.png)
+
+### MongoDB y API REST
+
+![Estado de la API en Insomnia](screenshots/Insomnia10-API-Status.png)
+
+![Paginación de libros en Insomnia](screenshots/Insomnia11-Books-Pagination.png)
+
+![Filtrado y estadísticas de la API](screenshots/Insomnia12-Books-Filters.png)
+
+![Colección de MongoDB Atlas](screenshots/MongoAtlas16-Project-Overview.png)
+
+![Documentos cargados en la colección Books](screenshots/MongoAtlas18-Books-Collection-1001.png)
+
+![Creación de un libro en Insomnia](screenshots/Insomnia14-Book-POST.png)
+
+![Actualización y eliminación del documento](screenshots/Insomnia20-Book-PUT.png)
+
+## Instalación y uso
+
+Requisitos:
+
+- Node.js 18 o superior
+- acceso a Internet para realizar el scraping
+- una cadena `MONGODB_URI` válida si se quiere ejecutar la API REST
+
+Clonar el proyecto:
 
 ```bash
 git clone https://github.com/AraceliFradejas/RTC-PROYECTO9-WEB-SCRAPPING-.git
@@ -197,184 +134,329 @@ cd RTC-PROYECTO9-WEB-SCRAPPING-
 npm install
 ```
 
-Puedo ejecutar el recorrido completo mediante el script incluido en `package.json`:
+Ejecutar el scraper:
 
 ```bash
 npm run scrape
 ```
 
-Para comprobar la validación sin abrir el navegador puedo ejecutar las pruebas automáticas:
+Ejecutar las pruebas:
 
 ```bash
 npm test
 ```
 
-La ampliación de la API se inicia después de configurar `MONGODB_URI`:
+Ejecutar la semilla y la API REST:
 
 ```bash
+cp .env.example .env
 npm run seed
 npm run api
 ```
 
-La semilla carga los 1.000 libros sin duplicarlos y la API queda disponible en `http://localhost:5050/api`.
+> El archivo `.env` no se incluye en el repositorio por seguridad. El ejemplo de configuración está disponible en `.env.example`.
 
-### Endpoints de la API
+## Variables de entorno
+
+```env
+PORT=5050
+MONGODB_URI=mongodb+srv://USUARIO:CONTRASENA@CLUSTER.mongodb.net/books-scraping?retryWrites=true&w=majority
+NODE_ENV=development
+```
+
+## Endpoints de la API
 
 | Método | Ruta | Función |
-|---|---|---|
+| --- | --- | --- |
 | GET | `/api` | Comprobar el estado de la API |
-| GET | `/api/books` | Listar y paginar los libros |
-| GET | `/api/books/stats` | Consultar estadísticas generales |
-| GET | `/api/books/:id` | Obtener un libro por su identificador |
+| GET | `/api/books` | Listar y paginar libros |
+| GET | `/api/books/stats` | Ver estadísticas generales |
+| GET | `/api/books/:id` | Obtener un libro por ID |
 | POST | `/api/books` | Crear un libro |
 | PUT | `/api/books/:id` | Actualizar un libro |
 | DELETE | `/api/books/:id` | Eliminar un libro |
 
-La consulta general acepta `page`, `limit`, `name`, `minPrice`, `maxPrice` y `rating`. Por ejemplo:
+Ejemplo de consulta:
 
 ```text
 http://localhost:5050/api/books?page=1&limit=20&minPrice=10&maxPrice=30&rating=4
 ```
 
-Durante el desarrollo puedo utilizar el modo de recarga automática incluido en Node.js:
-
-```bash
-npm run dev
-```
-
-## Estructura
+## Estructura del proyecto
 
 ```text
 .
 ├── src/
 │   ├── api/
-│   │   ├── controllers/
-│   │   │   └── bookController.js
 │   │   ├── config/
-│   │   │   └── database.js
+│   │   ├── controllers/
 │   │   ├── middleware/
-│   │   │   ├── errorHandler.js
-│   │   │   └── notFoundHandler.js
 │   │   ├── models/
-│   │   │   └── Book.js
 │   │   ├── routes/
-│   │   │   └── bookRoutes.js
 │   │   ├── seeds/
-│   │   │   └── seedBooks.js
-│   │   ├── utils/
-│   │   │   └── bookQuery.js
-│   │   ├── app.js
-│   │   └── server.js
+│   │   └── utils/
 │   ├── config/
-│   │   └── scraperConfig.js
 │   ├── services/
-│   │   └── extractProducts.js
-│   ├── utils/
-│   │   ├── closeObstructions.js
-│   │   ├── getNextPageUrl.js
-│   │   ├── saveProducts.js
-│   │   └── validateProducts.js
-│   └── scraper.js
+│   ├── scraper.js
+│   └── utils/
 ├── tests/
-│   ├── apiHealth.test.js
-│   └── validateProducts.test.js
+├── docs/
+├── screenshots/
 ├── .env.example
-├── products.json
-├── package-lock.json
 ├── package.json
-└── README.md
+├── products.json
+├── README.md
+└── LICENSE
 ```
-
-`scraper.js` coordina el flujo del scraping y cada módulo se ocupa de una responsabilidad concreta. La carpeta `api` contiene una aplicación Express independiente, la conexión con MongoDB, los middlewares y el servidor.
-
-## Memoria y evidencias
-
-He documentado el proceso en [`docs/MEMORIA.md`](docs/MEMORIA.md), siguiendo la línea de mis proyectos anteriores de API REST. La memoria recoge:
-
-- contexto y objetivos;
-- análisis de la web elegida;
-- arquitectura y decisiones técnicas;
-- explicación progresiva del scraper;
-- tratamiento de la paginación;
-- normalización y validación de datos;
-- dificultades encontradas y soluciones aplicadas;
-- pruebas realizadas;
-- resultados finales;
-- conclusiones y posibles mejoras.
-
-Las evidencias documentan el recorrido completo:
-
-1. La página inicial de Books to Scrape.
-2. La inspección de una tarjeta de producto.
-3. La ejecución de `npm run scrape`.
-4. El progreso de las distintas páginas en la terminal.
-5. El resumen final de productos obtenidos.
-6. Una muestra inicial de `products.json`.
-7. Los últimos productos almacenados.
-8. La validación de campos obligatorios y duplicados.
-9. La conexión y la persistencia en MongoDB Atlas.
-10. La paginación, los filtros y las estadísticas en Insomnia.
-11. La creación, consulta, actualización y eliminación de un libro temporal.
-12. La restauración de la colección a sus 1.000 libros originales.
-
-La memoria incorpora 24 capturas reales y la ejecución final confirma 14 pruebas superadas sin fallos.
-
-## Consideraciones responsables
-
-He elegido una web creada para practicar web scraping. Durante el desarrollo evitaré realizar peticiones innecesarias, introduciré esperas razonables cuando sean necesarias y no intentaré eludir sistemas de seguridad, autenticación o protección antibot.
-
-El scraper no necesita `.env` porque no utiliza credenciales ni variables secretas. La fase de MongoDB utilizará un `.env.example` sin secretos en el repositorio. Entregaré las credenciales reales exclusivamente mediante el canal privado indicado para la corrección.
-
-La plantilla pública contiene las variables previstas para la API:
-
-```env
-PORT=5000
-MONGODB_URI=mongodb+srv://USUARIO:CONTRASENA@CLUSTER.mongodb.net/books-scraping?retryWrites=true&w=majority
-NODE_ENV=development
-```
-
-Para trabajar en local copiaré `.env.example` como `.env` y sustituiré solamente los marcadores. `.env` permanece excluido de Git para impedir que las credenciales aparezcan en el repositorio público.
 
 ## Qué he aprendido
 
-Antes de comenzar la implementación, he aprendido a delimitar el objetivo del scraper y a elegir una fuente apropiada para una práctica académica. También he analizado las diferencias entre mi extractor anterior y este nuevo ejercicio: no necesito partir de una lista cerrada de URLs, sino descubrir las páginas mediante la propia navegación del catálogo.
+He aprendido a trasladar mi experiencia anterior con Playwright a Puppeteer, recorrer una paginación sin depender de un número fijo y ejecutar funciones dentro del DOM para transformar cada tarjeta en un objeto uniforme.
 
-En esta primera implementación he aprendido a iniciar Chromium desde Puppeteer, abrir una página, esperar a que aparezcan las tarjetas y ejecutar una función dentro del DOM mediante `$$eval`. He utilizado selectores CSS para obtener el nombre, el precio, la imagen, el enlace, la disponibilidad y la valoración de cada libro.
+También he practicado la normalización de precios, la conversión de rutas relativas en URLs absolutas y la validación de una colección completa antes de escribir el archivo definitivo. Con la ampliación he seguido el recorrido del dato desde la web hasta MongoDB: extracción, JSON, semilla idempotente, persistencia y consulta mediante una API REST.
 
-También he comprobado que los datos visibles no siempre tienen el formato adecuado para guardarlos. He eliminado el símbolo monetario para convertir el precio en un número, he transformado las rutas relativas en URLs absolutas y he normalizado los espacios de la disponibilidad. Antes de escribir el JSON valido que todos los productos tengan los campos obligatorios.
-
-Por último, he incorporado un bloque `finally` para cerrar el navegador tanto si la extracción termina correctamente como si se produce un error.
-
-Al incorporar la paginación he aprendido a controlar un bucle mediante la propia estructura de la web. Después de cada extracción busco el enlace `Next`: si existe, continúo con su URL; si no existe, el proceso ha llegado al final. De esta manera no dependo de conocer previamente el número de páginas.
-
-También he añadido un conjunto de URLs visitadas para detectar un posible ciclo de navegación, una pausa breve entre peticiones y una validación final de URLs duplicadas. He decidido escribir `products.json` solamente después de completar y validar todo el catálogo, evitando guardar como resultado definitivo una extracción parcial.
-
-Al reorganizar el código he aprendido que separar archivos no consiste solamente en reducir su tamaño. Cada módulo debe representar una responsabilidad clara y ofrecer una función que pueda reutilizarse. El archivo principal se limita ahora a coordinar el navegador y la paginación, mientras que la extracción, el cierre de modales, la validación y el guardado se encuentran separados.
-
-Con la ampliación he aprendido a convertir la salida de un scraper en una fuente de datos para MongoDB. He practicado una semilla idempotente, las validaciones de Mongoose, un CRUD completo y consultas paginadas con filtros. Las pruebas en Insomnia y Atlas me han permitido comprobar que cada respuesta de la API se corresponde con un cambio real en la colección y que, después de una prueba temporal, puedo restaurar el conjunto original de 1.000 libros.
-
-También he utilizado por primera vez el test runner nativo de Node.js. La validación es una función independiente de Puppeteer, por lo que puedo probar colecciones válidas, vacías, incompletas o duplicadas sin abrir Chromium. Las cuatro pruebas pasan correctamente y la ejecución completa después de la refactorización genera exactamente el mismo archivo de 1.000 productos.
+Las pruebas de Insomnia y MongoDB Atlas me han permitido comprobar visualmente la creación, consulta, actualización y eliminación de un libro temporal. Después de terminar el recorrido eliminé ese documento y confirmé que la colección volvía a contener los 1.000 libros originales.
 
 ## Autora
 
 **Araceli Fradejas Muñoz**
 
-Proyecto realizado para The Power Tech School, máster Rock The Code.
-
-## Licencia
-
-El código de este proyecto se publica bajo la [licencia MIT](LICENSE). Los datos, textos e imágenes extraídos de Books to Scrape pertenecen a sus respectivos responsables y se utilizan exclusivamente con fines educativos.
+Proyecto académico del máster Rock The Code · The Power Tech School.
 
 ## Redes sociales y enlaces
 
 - GitHub: <https://github.com/AraceliFradejas>
 - LinkedIn: <https://www.linkedin.com/in/araceli-fradejas-munoz-transformaciondigital/>
 - Instagram: <https://www.instagram.com/goldilocks1013x/>
-- X (Twitter): <https://x.com/AraceliFradejas>
+- X: <https://x.com/AraceliFradejas>
 - TikTok: <https://www.tiktok.com/@arucci1>
 - YouTube: <https://www.youtube.com/@aracelifradejasmunoz2758>
 - Medium: <https://medium.com/@araceli.fradejas>
 
-## Nota académica
+## Licencia y uso educativo
 
-Este repositorio corresponde a un proyecto educativo de web scraping. Books to Scrape y las imágenes o datos mostrados en su catálogo pertenecen a sus respectivos responsables. Los resultados se utilizarán exclusivamente con fines de aprendizaje.
+Publico el código bajo la [licencia MIT](LICENSE). Los textos, datos e imágenes de Books to Scrape pertenecen a sus respectivos responsables y los utilizo exclusivamente con fines educativos.
+
+## Notas finales
+
+En la entrega final combino dos partes del módulo: la extracción automatizada de datos desde una web y la transformación de esa información en una API funcional con persistencia en MongoDB. He separado las responsabilidades del código, documentado las comprobaciones y añadido pruebas para poder entender y mantener mejor el proyecto.
+
+---
+
+## English version
+
+# Books to Scrape · Web Scraping with Puppeteer
+
+I completed this academic project for the Backend module with Node.js, MongoDB and REST API in The Power Tech School's Rock The Code master's programme.
+
+In this repository I have included the complete solution: paginated scraping with Puppeteer, export to `products.json`, data validation and an extended REST API connected to MongoDB Atlas.
+
+[Technical memory](docs/MEMORIA.md) · [Capture guide](screenshots/README.md) · [Repository](https://github.com/AraceliFradejas/RTC-PROYECTO9-WEB-SCRAPPING-) · [Versión en español](#books-to-scrape--web-scraping-con-puppeteer)
+
+> Project status: completed and validated with 14 automated tests passing.
+
+## Summary
+
+- Puppeteer scraper that traverses the full pagination of Books to Scrape.
+- Extraction of title, price, image and product URL.
+- Validation of required fields, duplicate records and malformed data.
+- Generation of the `products.json` file with 1,000 records.
+- Loading of data into MongoDB using an idempotent seed.
+- Exposure of a complete CRUD with Express and Mongoose.
+- Documentation of evidence, tests and endpoints.
+
+## Background and motivation
+
+This project continues the learning path I began with [Advanced Web Extractor](https://github.com/AraceliFradejas/urls-testLDAAFM). In that project I used Python to extract content from different Línea Directa pages and convert it into Markdown and PDF documents for a knowledge base.
+
+This time I wanted to practise a different navigation model. Instead of starting with a fixed list of URLs, I needed to discover each page through the catalogue pagination. I chose Books to Scrape because it is intended for scraping practice and contains 1,000 books across 50 pages.
+
+## Technologies
+
+- Node.js
+- JavaScript
+- Puppeteer
+- Express
+- MongoDB Atlas
+- Mongoose
+- dotenv
+- CORS
+- Morgan
+- JSON
+- Git and GitHub
+
+## Project goal
+
+I divided the exercise into two phases:
+
+1. Web scraping and structured extraction from a paginated catalog.
+2. Persistence and query of that data through a database and a REST API.
+
+My main objective was to automate the collection of every product, avoid navigation errors and generate a reliable output for later use.
+
+I did not hard-code the number of pages. After extracting each listing, I search for the `Next` link. If it exists, I continue with its URL; if it does not, I finish the extraction.
+
+## Verified results
+
+- 50 pages processed
+- 1,000 products extracted
+- 0 incomplete products
+- 0 duplicate product URLs
+- 0 validation failures in the final collection
+- 14 automated tests passed
+
+## Data structure
+
+Each product is normalized with the following fields:
+
+| Field | Description |
+| --- | --- |
+| `name` | Book title |
+| `price` | Price as a numeric value |
+| `image` | Absolute URL of the image |
+| `url` | Link to the product page |
+| `currency` | Currency of the price |
+| `availability` | Availability extracted from the page |
+| `rating` | Rating from the product list |
+
+Example output:
+
+```json
+[
+  {
+    "name": "A Light in the Attic",
+    "price": 51.77,
+    "currency": "GBP",
+    "image": "https://books.toscrape.com/media/cache/...",
+    "url": "https://books.toscrape.com/catalogue/...",
+    "availability": "In stock",
+    "rating": 3
+  }
+]
+```
+
+## Evidence of the delivery
+
+### Scraping and validation
+
+![Books to Scrape catalog overview](screenshots/BooksToScrape1-Catalog-Overview.png)
+
+![Product card with selectors in the HTML](screenshots/Browser2-Product-Card-Inspection.png)
+
+![Scraper completion after full pagination](screenshots/Terminal5-Scraper-Completed.png)
+
+![First records in products.json](screenshots/VSCode6-Products-JSON-Start.png)
+
+![Final automated tests passing](screenshots/Terminal24-Final-Tests.png)
+
+### MongoDB and REST API
+
+![API status in Insomnia](screenshots/Insomnia10-API-Status.png)
+
+![Books pagination in Insomnia](screenshots/Insomnia11-Books-Pagination.png)
+
+![Filters and statistics](screenshots/Insomnia12-Books-Filters.png)
+
+![MongoDB Atlas collection overview](screenshots/MongoAtlas16-Project-Overview.png)
+
+![Books collection with imported documents](screenshots/MongoAtlas18-Books-Collection-1001.png)
+
+![Create book request in Insomnia](screenshots/Insomnia14-Book-POST.png)
+
+![Update and delete flow in Insomnia](screenshots/Insomnia20-Book-PUT.png)
+
+## Installation and usage
+
+Requirements:
+
+- Node.js 18 or newer
+- internet access for the scraper
+- a valid `MONGODB_URI` for the REST API execution
+
+Clone the project:
+
+```bash
+git clone https://github.com/AraceliFradejas/RTC-PROYECTO9-WEB-SCRAPPING-.git
+cd RTC-PROYECTO9-WEB-SCRAPPING-
+npm install
+```
+
+Run the scraper:
+
+```bash
+npm run scrape
+```
+
+Run the tests:
+
+```bash
+npm test
+```
+
+Run the seed and the REST API:
+
+```bash
+cp .env.example .env
+npm run seed
+npm run api
+```
+
+> The `.env` file is not included in the repository for security reasons. A configuration example is available in `.env.example`.
+
+## Environment variables
+
+```env
+PORT=5050
+MONGODB_URI=mongodb+srv://USER:PASSWORD@CLUSTER.mongodb.net/books-scraping?retryWrites=true&w=majority
+NODE_ENV=development
+```
+
+## API endpoints
+
+| Method | Route | Function |
+| --- | --- | --- |
+| GET | `/api` | Check API status |
+| GET | `/api/books` | List and paginate books |
+| GET | `/api/books/stats` | View general statistics |
+| GET | `/api/books/:id` | Get a book by id |
+| POST | `/api/books` | Create a book |
+| PUT | `/api/books/:id` | Update a book |
+| DELETE | `/api/books/:id` | Delete a book |
+
+Example query:
+
+```text
+http://localhost:5050/api/books?page=1&limit=20&minPrice=10&maxPrice=30&rating=4
+```
+
+## What I learned
+
+I learned how to transfer my previous Playwright experience to Puppeteer, navigate a catalogue without relying on a fixed page count and transform DOM cards into consistent JavaScript objects.
+
+I also practised price normalisation, conversion of relative paths into absolute URLs and validation of a complete collection before writing the final file. The extension helped me follow the complete data flow from the website to MongoDB: extraction, JSON generation, idempotent seeding, persistence and REST API queries.
+
+By testing the API in Insomnia and checking the documents in MongoDB Atlas, I verified the creation, retrieval, update and deletion of a temporary book. I then removed that test document and restored the original collection of 1,000 books.
+
+## Author
+
+**Araceli Fradejas Muñoz**
+
+Academic project for The Power Tech School · Rock The Code master's programme.
+
+## Links
+
+- GitHub: <https://github.com/AraceliFradejas>
+- LinkedIn: <https://www.linkedin.com/in/araceli-fradejas-munoz-transformaciondigital/>
+- Instagram: <https://www.instagram.com/goldilocks1013x/>
+- X: <https://x.com/AraceliFradejas>
+- TikTok: <https://www.tiktok.com/@arucci1>
+- YouTube: <https://www.youtube.com/@aracelifradejasmunoz2758>
+- Medium: <https://medium.com/@araceli.fradejas>
+
+## Licence and educational use
+
+I publish the code under the [MIT licence](LICENSE). Books to Scrape and its catalogue content belong to their respective owners. I use the extracted information exclusively for educational purposes.
+
+## Final note
+
+In this final deliverable I combine two parts of the module: automated extraction from a website and the transformation of that information into a functional API with MongoDB persistence. I separated the code responsibilities, documented the checks and added tests so I can understand and maintain the project more easily.
