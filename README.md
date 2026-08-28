@@ -4,7 +4,7 @@ Proyecto académico de web scraping del **Módulo 5: Backend [Node | Mongo | API
 
 En este proyecto voy a desarrollar un scraper con Node.js y Puppeteer capaz de recorrer todas las páginas del catálogo de [Books to Scrape](https://books.toscrape.com/), obtener todos sus libros y guardar los resultados en un archivo llamado `products.json`.
 
-> **Estado del proyecto:** entorno de Node.js y Puppeteer configurado. El scraper se desarrollará en el siguiente hito.
+> **Estado del proyecto:** primera extracción funcional completada. El scraper obtiene y valida los 20 libros de la página inicial; la paginación se incorporará en el siguiente hito.
 
 ## Motivación
 
@@ -74,6 +74,18 @@ El archivo `products.json` tendrá una estructura similar a la siguiente:
 ```
 
 Este ejemplo representa el formato previsto y no constituye todavía una evidencia de la ejecución del scraper.
+
+### Primer resultado verificado
+
+La primera versión funcional procesa una sola página antes de incorporar la paginación completa. La ejecución actual ha producido los siguientes resultados:
+
+- 1 página visitada;
+- 20 productos extraídos;
+- 0 productos con campos obligatorios incompletos;
+- 0 URLs de producto duplicadas;
+- 0 elementos superpuestos encontrados en la página durante la prueba.
+
+Esta comprobación intermedia me permite validar los selectores y la limpieza de los datos antes de repetir el proceso sobre las 50 páginas del catálogo.
 
 ## Enfoque de desarrollo
 
@@ -199,7 +211,11 @@ El archivo `.env` no será necesario para la funcionalidad inicial. Si la amplia
 
 Antes de comenzar la implementación, he aprendido a delimitar el objetivo del scraper y a elegir una fuente apropiada para una práctica académica. También he analizado las diferencias entre mi extractor anterior y este nuevo ejercicio: no necesito partir de una lista cerrada de URLs, sino descubrir las páginas mediante la propia navegación del catálogo.
 
-Durante el desarrollo actualizaré esta sección con aprendizajes reales sobre Puppeteer, selectores CSS, paginación, normalización de datos, gestión de errores y generación de JSON. También explicaré las diferencias que encuentre entre Playwright y Puppeteer desde mi propia experiencia con ambas herramientas.
+En esta primera implementación he aprendido a iniciar Chromium desde Puppeteer, abrir una página, esperar a que aparezcan las tarjetas y ejecutar una función dentro del DOM mediante `$$eval`. He utilizado selectores CSS para obtener el nombre, el precio, la imagen, el enlace, la disponibilidad y la valoración de cada libro.
+
+También he comprobado que los datos visibles no siempre tienen el formato adecuado para guardarlos. He eliminado el símbolo monetario para convertir el precio en un número, he transformado las rutas relativas en URLs absolutas y he normalizado los espacios de la disponibilidad. Antes de escribir el JSON valido que todos los productos tengan los campos obligatorios.
+
+Por último, he incorporado un bloque `finally` para cerrar el navegador tanto si la extracción termina correctamente como si se produce un error. En el siguiente hito ampliaré este aprendizaje con la detección de la página siguiente y el recorrido completo del catálogo.
 
 ## Autora
 
