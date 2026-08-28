@@ -262,6 +262,16 @@ He elegido una web creada para practicar web scraping. Durante el desarrollo evi
 
 El scraper no necesita `.env` porque no utiliza credenciales ni variables secretas. La fase de MongoDB utilizará un `.env.example` sin secretos en el repositorio. Entregaré las credenciales reales exclusivamente mediante el canal privado indicado para la corrección.
 
+La plantilla pública contiene las variables previstas para la API:
+
+```env
+PORT=5000
+MONGODB_URI=mongodb+srv://USUARIO:CONTRASENA@CLUSTER.mongodb.net/books-scraping?retryWrites=true&w=majority
+NODE_ENV=development
+```
+
+Para trabajar en local copiaré `.env.example` como `.env` y sustituiré solamente los marcadores. `.env` permanece excluido de Git para impedir que las credenciales aparezcan en el repositorio público.
+
 ## Qué he aprendido
 
 Antes de comenzar la implementación, he aprendido a delimitar el objetivo del scraper y a elegir una fuente apropiada para una práctica académica. También he analizado las diferencias entre mi extractor anterior y este nuevo ejercicio: no necesito partir de una lista cerrada de URLs, sino descubrir las páginas mediante la propia navegación del catálogo.
