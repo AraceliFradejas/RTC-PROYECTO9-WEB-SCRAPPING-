@@ -227,18 +227,66 @@ Este orden me permitió comprobar primero los selectores sobre una página y amp
 
 ## 12. Evidencias
 
-Las capturas se almacenarán en `screenshots/` siguiendo la [guía de evidencias](../screenshots/README.md). Hasta que se incorporen, esta sección funciona como lista de comprobación y no como afirmación de que las imágenes ya existen.
+He almacenado las capturas en `screenshots/` siguiendo la [guía de evidencias](../screenshots/README.md). Todas proceden de la navegación, la ejecución y los archivos reales del proyecto.
 
 | N.º | Evidencia | Archivo previsto | Estado |
 | ---: | --- | --- | :---: |
-| 1 | Catálogo inicial de Books to Scrape | `01-books-to-scrape-inicio.png` | Pendiente |
-| 2 | Tarjeta inspeccionada y selectores | `02-inspeccion-tarjeta.png` | Pendiente |
-| 3 | Inicio de `npm run scrape` | `03-scraper-inicio.png` | Pendiente |
-| 4 | Progreso intermedio | `04-scraper-progreso.png` | Pendiente |
-| 5 | Resumen de 50 páginas y 1.000 productos | `05-scraper-resultado.png` | Pendiente |
-| 6 | Primeros objetos de `products.json` | `06-products-inicio.png` | Pendiente |
-| 7 | Último objeto de `products.json` | `07-products-final.png` | Pendiente |
-| 8 | Cuatro pruebas superadas | `08-pruebas.png` | Pendiente |
+| 1 | Catálogo inicial de Books to Scrape | `01-books-to-scrape-inicio.png` | Completada |
+| 2 | Tarjeta inspeccionada y selectores | `02-inspeccion-tarjeta.png` | Completada |
+| 3 | Inicio de `npm run scrape` | `03-scraper-inicio.png` | Completada |
+| 4 | Progreso intermedio | `04-scraper-progreso.png` | Completada |
+| 5 | Resumen de 50 páginas y 1.000 productos | `05-scraper-resultado.png` | Completada |
+| 6 | Primeros objetos de `products.json` | `06-products-inicio.png` | Completada |
+| 7 | Último objeto de `products.json` | `07-products-final.png` | Completada |
+| 8 | Cuatro pruebas superadas | `08-pruebas.png` | Completada |
+
+### 12.1. Web seleccionada
+
+La página inicial muestra el catálogo, los datos visibles de cada libro y el total de 1.000 resultados.
+
+![Página inicial de Books to Scrape con el catálogo de libros](../screenshots/01-books-to-scrape-inicio.png)
+
+### 12.2. Inspección de una tarjeta
+
+En las herramientas de desarrollo comprobé `article.product_pod`, la imagen, el atributo `title`, la valoración, el precio y la disponibilidad.
+
+![Inspección del HTML de la primera tarjeta de producto](../screenshots/02-inspeccion-tarjeta.png)
+
+### 12.3. Inicio de la extracción
+
+La terminal muestra el comando `npm run scrape`, las primeras URLs y el incremento de 20 productos por página.
+
+![Inicio del scraper y primeras páginas procesadas](../screenshots/03-scraper-inicio.png)
+
+### 12.4. Progreso de la paginación
+
+La zona intermedia documenta el recorrido desde la página 20 hasta la 40 y el crecimiento del acumulado de 400 a 800 productos.
+
+![Progreso intermedio del scraper entre las páginas 20 y 40](../screenshots/04-scraper-progreso.png)
+
+### 12.5. Finalización del scraper
+
+La ejecución llega a la página 50, alcanza 1.000 productos, guarda el archivo y cierra Chromium correctamente.
+
+![Resumen final con 50 páginas y 1.000 productos](../screenshots/05-scraper-resultado.png)
+
+### 12.6. Inicio del archivo generado
+
+Los primeros objetos muestran los campos normalizados, los precios numéricos y las URLs absolutas.
+
+![Primeros productos almacenados en products.json](../screenshots/06-products-inicio.png)
+
+### 12.7. Final del archivo generado
+
+La captura incluye los últimos objetos, el libro final y el corchete que cierra correctamente el array JSON en la línea 9002.
+
+![Últimos productos y cierre del archivo products.json](../screenshots/07-products-final.png)
+
+### 12.8. Pruebas automáticas
+
+El test runner confirma cuatro pruebas superadas y ningún fallo.
+
+![Resultado de npm test con cuatro pruebas superadas](../screenshots/08-pruebas.png)
 
 No incluyo capturas de MongoDB Atlas ni Insomnia porque el proyecto actual no utiliza base de datos ni expone una API. Añadir esas herramientas sin una funcionalidad que las necesite no demostraría el objetivo principal del ejercicio.
 

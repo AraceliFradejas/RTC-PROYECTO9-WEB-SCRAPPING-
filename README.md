@@ -90,6 +90,28 @@ La ejecución completa ha producido los siguientes resultados:
 
 El scraper no contiene el número 50 como límite. Después de procesar cada listado busca el enlace `Next`, obtiene su URL y continúa mientras ese enlace exista. En la última página no encuentra el enlace y finaliza el bucle.
 
+## Evidencias destacadas
+
+### Catálogo seleccionado
+
+![Página inicial de Books to Scrape con 1.000 resultados](screenshots/01-books-to-scrape-inicio.png)
+
+### Selectores de una tarjeta
+
+![HTML de una tarjeta con imagen, título, precio y disponibilidad](screenshots/02-inspeccion-tarjeta.png)
+
+### Recorrido completo
+
+![Resultado final del scraper con 50 páginas y 1.000 productos](screenshots/05-scraper-resultado.png)
+
+### Archivo generado
+
+![Primeros objetos almacenados en products.json](screenshots/06-products-inicio.png)
+
+### Pruebas automáticas
+
+![Cuatro pruebas superadas y cero fallos](screenshots/08-pruebas.png)
+
 ## Enfoque de desarrollo
 
 He construido el proyecto de manera progresiva:
