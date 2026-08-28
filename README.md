@@ -268,6 +268,10 @@ También he utilizado por primera vez el test runner nativo de Node.js. La valid
 
 Proyecto realizado para The Power Tech School, máster Rock The Code.
 
+## Licencia
+
+El código de este proyecto se publica bajo la [licencia MIT](LICENSE). Los datos, textos e imágenes extraídos de Books to Scrape pertenecen a sus respectivos responsables y se utilizan exclusivamente con fines educativos.
+
 ## Redes sociales y enlaces
 
 - GitHub: <https://github.com/AraceliFradejas>

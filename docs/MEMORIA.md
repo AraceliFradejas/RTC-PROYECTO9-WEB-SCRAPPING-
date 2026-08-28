@@ -11,6 +11,7 @@
 | Tecnologías principales | Node.js, JavaScript y Puppeteer |
 | Fuente | [Books to Scrape](https://books.toscrape.com/) |
 | Repositorio | [RTC-PROYECTO9-WEB-SCRAPPING-](https://github.com/AraceliFradejas/RTC-PROYECTO9-WEB-SCRAPPING-) |
+| Licencia del código | [MIT](../LICENSE) |
 
 > Esta memoria recoge el desarrollo real del proyecto. Las cifras proceden de la ejecución y validación de `products.json`. Las capturas pendientes se incorporarán solamente después de realizarlas.
 
