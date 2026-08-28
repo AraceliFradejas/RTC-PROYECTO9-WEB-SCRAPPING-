@@ -4,7 +4,7 @@ Proyecto académico de web scraping del **Módulo 5: Backend [Node | Mongo | API
 
 En este proyecto voy a desarrollar un scraper con Node.js y Puppeteer capaz de recorrer todas las páginas del catálogo de [Books to Scrape](https://books.toscrape.com/), obtener todos sus libros y guardar los resultados en un archivo llamado `products.json`.
 
-> **Estado del proyecto:** fase inicial de documentación y planificación.
+> **Estado del proyecto:** entorno de Node.js y Puppeteer configurado. El scraper se desarrollará en el siguiente hito.
 
 ## Motivación
 
@@ -119,7 +119,7 @@ Además de los requisitos obligatorios, estudiaré las siguientes mejoras:
 
 Una posible ampliación posterior sería almacenar los resultados en MongoDB y crear un CRUD. Esta parte es opcional y solo la incorporaré cuando el scraper obligatorio esté terminado y comprobado.
 
-## Tecnologías previstas
+## Tecnologías
 
 - Node.js
 - JavaScript
@@ -129,7 +129,15 @@ Una posible ampliación posterior sería almacenar los resultados en MongoDB y c
 
 ## Instalación y ejecución
 
-Las instrucciones se completarán cuando prepare el entorno del proyecto. El scraper podrá ejecutarse desde `package.json` mediante un comando sencillo:
+Para preparar el proyecto en local necesito Node.js 18 o una versión posterior. Después de clonar el repositorio instalaré las dependencias declaradas en `package.json`:
+
+```bash
+git clone https://github.com/AraceliFradejas/RTC-PROYECTO9-WEB-SCRAPPING-.git
+cd RTC-PROYECTO9-WEB-SCRAPPING-
+npm install
+```
+
+Cuando el scraper esté implementado podré ejecutarlo mediante el script incluido en `package.json`:
 
 ```bash
 npm run scrape

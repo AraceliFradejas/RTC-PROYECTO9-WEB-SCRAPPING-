@@ -1,0 +1,24 @@
+{
+  "name": "rtc-proyecto9-web-scraping",
+  "version": "1.0.0",
+  "description": "Scraper con Puppeteer para recorrer el catálogo paginado de Books to Scrape y generar products.json.",
+  "type": "module",
+  "main": "src/scraper.js",
+  "scripts": {
+    "scrape": "node src/scraper.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "web-scraping",
+    "puppeteer",
+    "nodejs",
+    "books-to-scrape"
+  ],
+  "author": "Araceli Fradejas Muñoz",
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer": "^25.9.0"
+  }
+}

@@ -1,0 +1,17 @@
+# Dependencias instaladas por npm
+node_modules/
+
+# Variables de entorno y credenciales
+.env
+.env.*
+!.env.example
+
+# Informes y archivos temporales
+coverage/
+*.log
+npm-debug.log*
+
+# Archivos del sistema y del editor
+.DS_Store
+.vscode/
+.idea/
