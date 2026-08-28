@@ -94,23 +94,23 @@ El scraper no contiene el número 50 como límite. Después de procesar cada lis
 
 ### Catálogo seleccionado
 
-![Página inicial de Books to Scrape con 1.000 resultados](screenshots/01-books-to-scrape-inicio.png)
+![Página inicial de Books to Scrape con 1.000 resultados](screenshots/BooksToScrape1-Catalog-Overview.png)
 
 ### Selectores de una tarjeta
 
-![HTML de una tarjeta con imagen, título, precio y disponibilidad](screenshots/02-inspeccion-tarjeta.png)
+![HTML de una tarjeta con imagen, título, precio y disponibilidad](screenshots/Browser2-Product-Card-Inspection.png)
 
 ### Recorrido completo
 
-![Resultado final del scraper con 50 páginas y 1.000 productos](screenshots/05-scraper-resultado.png)
+![Resultado final del scraper con 50 páginas y 1.000 productos](screenshots/Terminal5-Scraper-Completed.png)
 
 ### Archivo generado
 
-![Primeros objetos almacenados en products.json](screenshots/06-products-inicio.png)
+![Primeros objetos almacenados en products.json](screenshots/VSCode6-Products-JSON-Start.png)
 
 ### Pruebas automáticas
 
-![Cuatro pruebas superadas y cero fallos](screenshots/08-pruebas.png)
+![Catorce pruebas superadas y cero fallos](screenshots/Terminal24-Final-Tests.png)
 
 ## Enfoque de desarrollo
 
@@ -302,7 +302,7 @@ He documentado el proceso en [`docs/MEMORIA.md`](docs/MEMORIA.md), siguiendo la 
 - resultados finales;
 - conclusiones y posibles mejoras.
 
-Las evidencias del scraping ya documentan:
+Las evidencias documentan el recorrido completo:
 
 1. La página inicial de Books to Scrape.
 2. La inspección de una tarjeta de producto.
@@ -312,8 +312,12 @@ Las evidencias del scraping ya documentan:
 6. Una muestra inicial de `products.json`.
 7. Los últimos productos almacenados.
 8. La validación de campos obligatorios y duplicados.
+9. La conexión y la persistencia en MongoDB Atlas.
+10. La paginación, los filtros y las estadísticas en Insomnia.
+11. La creación, consulta, actualización y eliminación de un libro temporal.
+12. La restauración de la colección a sus 1.000 libros originales.
 
-La ampliación con MongoDB y API REST solo incorporará evidencias de MongoDB Atlas e Insomnia cuando la funcionalidad correspondiente esté implementada y probada.
+La memoria incorpora 24 capturas reales y la ejecución final confirma 14 pruebas superadas sin fallos.
 
 ## Consideraciones responsables
 
@@ -346,6 +350,8 @@ Al incorporar la paginación he aprendido a controlar un bucle mediante la propi
 También he añadido un conjunto de URLs visitadas para detectar un posible ciclo de navegación, una pausa breve entre peticiones y una validación final de URLs duplicadas. He decidido escribir `products.json` solamente después de completar y validar todo el catálogo, evitando guardar como resultado definitivo una extracción parcial.
 
 Al reorganizar el código he aprendido que separar archivos no consiste solamente en reducir su tamaño. Cada módulo debe representar una responsabilidad clara y ofrecer una función que pueda reutilizarse. El archivo principal se limita ahora a coordinar el navegador y la paginación, mientras que la extracción, el cierre de modales, la validación y el guardado se encuentran separados.
+
+Con la ampliación he aprendido a convertir la salida de un scraper en una fuente de datos para MongoDB. He practicado una semilla idempotente, las validaciones de Mongoose, un CRUD completo y consultas paginadas con filtros. Las pruebas en Insomnia y Atlas me han permitido comprobar que cada respuesta de la API se corresponde con un cambio real en la colección y que, después de una prueba temporal, puedo restaurar el conjunto original de 1.000 libros.
 
 También he utilizado por primera vez el test runner nativo de Node.js. La validación es una función independiente de Puppeteer, por lo que puedo probar colecciones válidas, vacías, incompletas o duplicadas sin abrir Chromium. Las cuatro pruebas pasan correctamente y la ejecución completa después de la refactorización genera exactamente el mismo archivo de 1.000 productos.
 
