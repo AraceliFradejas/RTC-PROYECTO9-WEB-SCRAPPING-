@@ -13,7 +13,7 @@
 | Repositorio | [RTC-PROYECTO9-WEB-SCRAPPING-](https://github.com/AraceliFradejas/RTC-PROYECTO9-WEB-SCRAPPING-) |
 | Licencia del código | [MIT](../LICENSE) |
 
-> Esta memoria recoge el desarrollo real del proyecto. Las cifras proceden de la ejecución y validación de `products.json`. Las capturas pendientes se incorporarán solamente después de realizarlas.
+> Esta memoria recoge el desarrollo real del proyecto. Las cifras proceden de la ejecución y validación de `products.json`, y las evidencias incorporadas corresponden a capturas reales del proceso.
 
 ## 1. Contexto y motivación
 
@@ -289,7 +289,7 @@ El test runner confirma cuatro pruebas superadas y ningún fallo.
 
 ![Resultado de npm test con cuatro pruebas superadas](../screenshots/08-pruebas.png)
 
-Estas ocho capturas documentan exclusivamente el scraping obligatorio. Las evidencias de MongoDB Atlas e Insomnia se incorporarán en el anexo experimental cuando la API esté implementada y probada.
+Estas ocho capturas documentan la fase de scraping. Las evidencias de MongoDB Atlas e Insomnia se incorporarán en la ampliación del proyecto cuando la API esté implementada y probada.
 
 ## 13. Dificultades y decisiones
 
@@ -331,13 +331,13 @@ Finalmente, he comprobado el valor de separar responsabilidades y probar las fun
 - generar un resumen estadístico como archivo independiente;
 - documentar tiempos de ejecución en distintos entornos.
 
-## 16. Anexo: continuando la práctica de lo ya aprendido
+## 16. Ampliación del proyecto: del scraping a una API REST
 
 Tras completar y verificar el scraper, he decidido utilizar sus resultados para continuar practicando MongoDB y API REST con un conjunto diferente y más voluminoso de datos.
 
 Esta ampliación parte de mi experiencia en APIs anteriores inspiradas en Taylor Swift. En el proyecto sobre *The Eras Tour* trabajé con 149 conciertos y 238 canciones relacionadas. Los 1.000 libros actuales me permitirán observar el funcionamiento de una semilla idempotente, las consultas paginadas y los filtros sobre una colección de mayor tamaño.
 
-### Objetivos del anexo
+### Objetivos de la ampliación
 
 - conectar la aplicación con MongoDB Atlas mediante Mongoose;
 - crear un modelo `Book` basado en la estructura de `products.json`;
@@ -349,15 +349,15 @@ Esta ampliación parte de mi experiencia en APIs anteriores inspiradas en Taylor
 - probar y documentar los endpoints con Insomnia;
 - añadir evidencias reales de MongoDB Atlas e Insomnia.
 
-### Alcance y separación
+### Integración con el scraping
 
-El anexo es voluntario y no altera el resultado del scraping. `products.json` seguirá siendo la salida obligatoria y funcionará sin MongoDB. La base de datos consumirá ese archivo como fuente para su semilla.
+`products.json` seguirá siendo la salida obligatoria del scraping y funcionará sin MongoDB. La base de datos consumirá ese archivo como fuente para su semilla, conectando ambas fases sin acoplar su ejecución.
 
 No utilizaré Cloudinary para las portadas. Las imágenes ya tienen URLs absolutas y volver a alojar 1.000 archivos aumentaría el consumo de recursos, duplicaría contenido ajeno y no aportaría valor al objetivo de esta práctica.
 
 ### Estado
 
-En esta versión he definido el alcance del anexo. La implementación de MongoDB y la API REST se realizará en hitos posteriores, manteniendo commits separados para configuración, semilla, CRUD, filtros, pruebas y evidencias.
+En esta versión he definido el alcance de la ampliación. La implementación de MongoDB y la API REST se realizará en hitos posteriores, manteniendo commits separados para configuración, semilla, CRUD, filtros, pruebas y evidencias.
 
 ## 17. Conclusión
 

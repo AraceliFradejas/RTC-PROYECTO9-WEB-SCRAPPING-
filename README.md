@@ -153,15 +153,15 @@ Además de los requisitos obligatorios, he incorporado las siguientes mejoras:
 - cierre seguro del navegador aunque se produzca un error;
 - pruebas automáticas de la validación.
 
-Como mejora futura del scraper quedan los reintentos limitados ante errores recuperables. El scraping obligatorio permanece cerrado y separado del anexo experimental descrito a continuación.
+Como mejora futura del scraper quedan los reintentos limitados ante errores recuperables. A partir del resultado ya verificado continúo el proyecto con una fase de persistencia y consulta de los datos.
 
-## Anexo: continuando la práctica de lo ya aprendido
+## Ampliación del proyecto: del scraping a una API REST
 
-Una vez terminado el objetivo obligatorio, he decidido continuar experimentando con los datos obtenidos. Este anexo voluntario conectará los 1.000 libros de `products.json` con los contenidos de MongoDB y API REST que he trabajado durante el módulo.
+Una vez terminado el objetivo obligatorio, he decidido completar el recorrido de los datos obtenidos. Esta ampliación conectará los 1.000 libros de `products.json` con los contenidos de MongoDB y API REST que he trabajado durante el módulo.
 
 En mis anteriores APIs inspiradas en Taylor Swift ya había gestionado volúmenes importantes de información. En el proyecto dedicado a *The Eras Tour* documenté 149 conciertos y 238 canciones relacionadas. Ahora quiero comprobar cómo se comportan una semilla, una colección de MongoDB y una API REST al trabajar con 1.000 productos procedentes directamente de un scraping.
 
-El anexo no modifica la finalidad del scraper ni forma parte de sus requisitos mínimos. Lo desarrollaré como una segunda fase independiente con los siguientes objetivos:
+El scraper seguirá funcionando de forma independiente y `products.json` continuará siendo su salida obligatoria. Sobre ese resultado desarrollaré una segunda fase con los siguientes objetivos:
 
 - cargar `products.json` en MongoDB mediante una semilla idempotente;
 - evitar duplicados utilizando la URL original de cada libro;
@@ -254,13 +254,13 @@ Las evidencias se añadirán cuando las acciones correspondientes se hayan reali
 7. Los últimos productos almacenados.
 8. La validación de campos obligatorios y duplicados.
 
-El anexo experimental con MongoDB y API REST se documentará por separado y solo incorporará evidencias de MongoDB Atlas e Insomnia cuando la funcionalidad correspondiente esté implementada y probada.
+La ampliación con MongoDB y API REST solo incorporará evidencias de MongoDB Atlas e Insomnia cuando la funcionalidad correspondiente esté implementada y probada.
 
 ## Consideraciones responsables
 
 He elegido una web creada para practicar web scraping. Durante el desarrollo evitaré realizar peticiones innecesarias, introduciré esperas razonables cuando sean necesarias y no intentaré eludir sistemas de seguridad, autenticación o protección antibot.
 
-El scraper no necesita `.env` porque no utiliza credenciales ni variables secretas. El anexo de MongoDB utilizará un `.env.example` sin secretos en el repositorio. Entregaré las credenciales reales exclusivamente mediante el canal privado indicado para la corrección.
+El scraper no necesita `.env` porque no utiliza credenciales ni variables secretas. La fase de MongoDB utilizará un `.env.example` sin secretos en el repositorio. Entregaré las credenciales reales exclusivamente mediante el canal privado indicado para la corrección.
 
 ## Qué he aprendido
 
