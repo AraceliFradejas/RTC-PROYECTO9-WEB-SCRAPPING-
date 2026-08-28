@@ -2,7 +2,9 @@
 
 Proyecto académico de web scraping del **Módulo 5: Backend [Node | Mongo | API REST]** del máster **Rock The Code** de **The Power Tech School**.
 
-En este proyecto voy a desarrollar un scraper con Node.js y Puppeteer capaz de recorrer todas las páginas del catálogo de [Books to Scrape](https://books.toscrape.com/), obtener todos sus libros y guardar los resultados en un archivo llamado `products.json`.
+En este proyecto he desarrollado un scraper con Node.js y Puppeteer capaz de recorrer todas las páginas del catálogo de [Books to Scrape](https://books.toscrape.com/), obtener todos sus libros y guardar los resultados en un archivo llamado `products.json`.
+
+[Memoria técnica y evidencias](docs/MEMORIA.md) · [Guía de capturas](screenshots/README.md) · [Repositorio](https://github.com/AraceliFradejas/RTC-PROYECTO9-WEB-SCRAPPING-)
 
 > **Estado del proyecto:** scraper paginado completado y verificado con 1.000 productos extraídos de 50 páginas.
 
@@ -12,13 +14,13 @@ Este proyecto continúa una línea de aprendizaje que comencé con [Advanced Web
 
 En aquel proyecto trabajé con Playwright, BeautifulSoup, requests, pandas y WeasyPrint. Procesé URLs procedentes de distintas pestañas de un archivo Excel, ejecuté JavaScript, desplegué acordeones, activé pestañas y provoqué la carga diferida de contenido mediante desplazamiento. También incorporé control del progreso, tratamiento de errores y generación automatizada de documentos.
 
-Para este nuevo proyecto quiero aplicar parte de aquel aprendizaje en un contexto diferente. En lugar de recopilar contenido documental desde una lista previa de URLs, voy a recorrer automáticamente un catálogo paginado. También cambio el entorno tecnológico: utilizaré JavaScript, Node.js y Puppeteer para generar un conjunto de datos JSON con una estructura uniforme.
+Para este nuevo proyecto he aplicado parte de aquel aprendizaje en un contexto diferente. En lugar de recopilar contenido documental desde una lista previa de URLs, he recorrido automáticamente un catálogo paginado. También he cambiado el entorno tecnológico: he utilizado JavaScript, Node.js y Puppeteer para generar un conjunto de datos JSON con una estructura uniforme.
 
-Buscando una web con muchos productos, una paginación clara y una estructura estable, encontré Books to Scrape. Elegí esta página porque está preparada específicamente para practicar web scraping y contiene 1.000 libros distribuidos en 50 páginas. Su estructura me permitirá comprobar visualmente los datos obligatorios del ejercicio y centrarme en comprender correctamente la navegación automatizada.
+Buscando una web con muchos productos, una paginación clara y una estructura estable, encontré Books to Scrape. Elegí esta página porque está preparada específicamente para practicar web scraping y contiene 1.000 libros distribuidos en 50 páginas. Su estructura me ha permitido comprobar visualmente los datos obligatorios del ejercicio y centrarme en comprender correctamente la navegación automatizada.
 
 ## Objetivo principal
 
-Mi objetivo es construir un scraper que:
+Mi objetivo ha sido construir un scraper que:
 
 - abra Books to Scrape mediante Puppeteer;
 - detecte y cierre posibles modales o elementos que dificulten la navegación;
@@ -30,11 +32,11 @@ Mi objetivo es construir un scraper que:
 - genere un archivo `products.json` con todos los resultados;
 - pueda ejecutarse mediante un comando sencillo definido en `package.json`.
 
-No fijaré manualmente el número de páginas que debe recorrer el scraper. La finalización dependerá de la existencia del enlace de página siguiente, de modo que el proceso pueda adaptarse si el catálogo cambia.
+No he fijado manualmente el número de páginas que debe recorrer el scraper. La finalización depende de la existencia del enlace de página siguiente, de modo que el proceso pueda adaptarse si el catálogo cambia.
 
-## Datos previstos
+## Datos extraídos
 
-Cada producto incluirá los tres campos exigidos en el enunciado:
+Cada producto incluye los tres campos exigidos en el enunciado:
 
 | Campo | Descripción |
 | --- | --- |
@@ -42,7 +44,7 @@ Cada producto incluirá los tres campos exigidos en el enunciado:
 | `price` | Precio normalizado como valor numérico |
 | `image` | URL absoluta de la imagen |
 
-Como mejora, estudiaré la incorporación de otros datos disponibles que aporten valor al resultado:
+Como mejora, he incorporado otros datos disponibles que aportan valor al resultado:
 
 | Campo | Descripción |
 | --- | --- |
@@ -50,13 +52,13 @@ Como mejora, estudiaré la incorporación de otros datos disponibles que aporten
 | `url` | Dirección de la ficha del libro |
 | `availability` | Disponibilidad indicada en la web |
 | `rating` | Valoración del producto |
-| `category` | Categoría a la que pertenece |
+| `category` | No incorporado: exige visitar cada ficha individual |
 
-La estructura definitiva dependerá de las comprobaciones realizadas durante el desarrollo. No incorporaré datos adicionales si no puedo extraerlos y validarlos de forma consistente.
+He mantenido solamente los datos que puedo extraer y validar de forma consistente desde las tarjetas del listado.
 
 ## Estructura del resultado
 
-El archivo `products.json` tendrá una estructura similar a la siguiente:
+El archivo `products.json` tiene una estructura como la siguiente:
 
 ```json
 [
@@ -90,17 +92,17 @@ El scraper no contiene el número 50 como límite. Después de procesar cada lis
 
 ## Enfoque de desarrollo
 
-Voy a construir el proyecto de manera progresiva:
+He construido el proyecto de manera progresiva:
 
-1. Prepararé el entorno de Node.js e instalaré Puppeteer.
-2. Analizaré el HTML de Books to Scrape y localizaré selectores estables.
-3. Extraeré primero los productos de una sola página.
-4. Normalizaré nombres, precios, imágenes y enlaces.
-5. Incorporaré la navegación automática por todas las páginas.
-6. Gestionaré modales, esperas, errores de navegación y cierre del navegador.
-7. Validaré campos obligatorios y posibles productos duplicados.
-8. Generaré `products.json` solamente cuando termine la extracción.
-9. Documentaré la ejecución y las conclusiones mediante evidencias reales.
+1. Preparé el entorno de Node.js e instalé Puppeteer.
+2. Analicé el HTML de Books to Scrape y localicé selectores estables.
+3. Extraje primero los productos de una sola página.
+4. Normalicé nombres, precios, imágenes y enlaces.
+5. Incorporé la navegación automática por todas las páginas.
+6. Gestioné modales, esperas, errores de navegación y cierre del navegador.
+7. Validé campos obligatorios y posibles productos duplicados.
+8. Configuré la escritura de `products.json` al terminar la extracción.
+9. Documenté la ejecución y preparé el plan de evidencias reales.
 
 ## Comparación con mi proyecto anterior
 
@@ -114,9 +116,9 @@ Voy a construir el proyecto de manera progresiva:
 | Acordeones, pestañas y *lazy loading* | Tarjetas de producto y enlace a la página siguiente |
 | Base de conocimiento para Copilot | Conjunto de datos reutilizable |
 
-## Mejoras previstas
+## Mejoras incorporadas
 
-Además de los requisitos obligatorios, estudiaré las siguientes mejoras:
+Además de los requisitos obligatorios, he incorporado las siguientes mejoras:
 
 - selectores centralizados para facilitar su mantenimiento;
 - separación de responsabilidades en archivos pequeños;
@@ -126,11 +128,10 @@ Además de los requisitos obligatorios, estudiaré las siguientes mejoras:
 - validación de campos obligatorios;
 - mensajes de progreso por página;
 - resumen final de la ejecución;
-- reintentos limitados ante errores recuperables;
 - cierre seguro del navegador aunque se produzca un error;
-- pruebas automáticas de las funciones de normalización y validación.
+- pruebas automáticas de la validación.
 
-Una posible ampliación posterior sería almacenar los resultados en MongoDB y crear un CRUD. Esta parte es opcional y solo la incorporaré cuando el scraper obligatorio esté terminado y comprobado.
+Como mejoras futuras quedan los reintentos limitados ante errores recuperables y, de forma opcional, el almacenamiento en MongoDB con un CRUD. No he incorporado estas ampliaciones porque el scraper obligatorio ya está terminado y quiero mantener el alcance centrado en la evaluación principal.
 
 ## Tecnologías
 
@@ -189,7 +190,7 @@ npm test
 
 ## Memoria y evidencias
 
-Voy a documentar el proceso en `docs/MEMORIA.md`, siguiendo la línea de mis proyectos anteriores de API REST. La memoria recogerá:
+He documentado el proceso en [`docs/MEMORIA.md`](docs/MEMORIA.md), siguiendo la línea de mis proyectos anteriores de API REST. La memoria recoge:
 
 - contexto y objetivos;
 - análisis de la web elegida;
@@ -219,7 +220,7 @@ Si desarrollo posteriormente una API con MongoDB, ampliaré la memoria con evide
 
 He elegido una web creada para practicar web scraping. Durante el desarrollo evitaré realizar peticiones innecesarias, introduciré esperas razonables cuando sean necesarias y no intentaré eludir sistemas de seguridad, autenticación o protección antibot.
 
-El archivo `.env` no será necesario para la funcionalidad inicial. Si la ampliación con MongoDB requiere credenciales, utilizaré un `.env.example` sin secretos en el repositorio y entregaré las credenciales reales exclusivamente mediante el canal privado indicado para la corrección.
+El proyecto actual no necesita `.env` porque no utiliza credenciales ni variables secretas. Si en el futuro desarrollo la ampliación con MongoDB, utilizaré un `.env.example` sin secretos en el repositorio y entregaré las credenciales reales exclusivamente mediante el canal privado indicado para la corrección.
 
 ## Qué he aprendido
 
