@@ -150,29 +150,42 @@ cd RTC-PROYECTO9-WEB-SCRAPPING-
 npm install
 ```
 
-Cuando el scraper esté implementado podré ejecutarlo mediante el script incluido en `package.json`:
+Puedo ejecutar el recorrido completo mediante el script incluido en `package.json`:
 
 ```bash
 npm run scrape
 ```
 
-## Estructura prevista
+Para comprobar la validación sin abrir el navegador puedo ejecutar las pruebas automáticas:
+
+```bash
+npm test
+```
+
+## Estructura
 
 ```text
 .
-├── docs/
-│   └── MEMORIA.md
-├── screenshots/
 ├── src/
 │   ├── config/
+│   │   └── scraperConfig.js
+│   ├── services/
+│   │   └── extractProducts.js
 │   ├── utils/
+│   │   ├── closeObstructions.js
+│   │   ├── getNextPageUrl.js
+│   │   ├── saveProducts.js
+│   │   └── validateProducts.js
 │   └── scraper.js
+├── tests/
+│   └── validateProducts.test.js
 ├── products.json
+├── package-lock.json
 ├── package.json
 └── README.md
 ```
 
-Esta estructura es una propuesta inicial y podrá evolucionar cuando conozca mejor las responsabilidades reales del código.
+`scraper.js` coordina el flujo general y cada módulo se ocupa de una responsabilidad concreta. La configuración centraliza URLs, selectores y tiempos; el servicio de extracción trabaja con el DOM; y las utilidades gestionan modales, paginación, validación y escritura del archivo.
 
 ## Memoria y evidencias
 
@@ -221,6 +234,10 @@ Por último, he incorporado un bloque `finally` para cerrar el navegador tanto s
 Al incorporar la paginación he aprendido a controlar un bucle mediante la propia estructura de la web. Después de cada extracción busco el enlace `Next`: si existe, continúo con su URL; si no existe, el proceso ha llegado al final. De esta manera no dependo de conocer previamente el número de páginas.
 
 También he añadido un conjunto de URLs visitadas para detectar un posible ciclo de navegación, una pausa breve entre peticiones y una validación final de URLs duplicadas. He decidido escribir `products.json` solamente después de completar y validar todo el catálogo, evitando guardar como resultado definitivo una extracción parcial.
+
+Al reorganizar el código he aprendido que separar archivos no consiste solamente en reducir su tamaño. Cada módulo debe representar una responsabilidad clara y ofrecer una función que pueda reutilizarse. El archivo principal se limita ahora a coordinar el navegador y la paginación, mientras que la extracción, el cierre de modales, la validación y el guardado se encuentran separados.
+
+También he utilizado por primera vez el test runner nativo de Node.js. La validación es una función independiente de Puppeteer, por lo que puedo probar colecciones válidas, vacías, incompletas o duplicadas sin abrir Chromium. Las cuatro pruebas pasan correctamente y la ejecución completa después de la refactorización genera exactamente el mismo archivo de 1.000 productos.
 
 ## Autora
 
