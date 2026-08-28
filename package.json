@@ -8,6 +8,7 @@
     "api": "node src/api/server.js",
     "dev": "node --watch src/api/server.js",
     "scrape": "node src/scraper.js",
+    "seed": "node src/api/seeds/seedBooks.js",
     "test": "node --test"
   },
   "engines": {

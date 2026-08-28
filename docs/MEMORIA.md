@@ -357,7 +357,7 @@ No utilizaré Cloudinary para las portadas. Las imágenes ya tienen URLs absolut
 
 ### Estado
 
-En esta versión he preparado la base de la ampliación: Express, Mongoose, dotenv, CORS, Morgan, conexión desacoplada, ruta de estado y middlewares de errores. La aplicación cuenta con pruebas de la respuesta `200` de `/api` y del error `404` para rutas inexistentes. La semilla, el modelo `Book`, el CRUD, los filtros y las evidencias se incorporarán en hitos posteriores.
+En esta versión he preparado la base de la ampliación: Express, Mongoose, dotenv, CORS, Morgan, conexión desacoplada, ruta de estado y middlewares de errores. La aplicación cuenta con pruebas de la respuesta `200` de `/api` y del error `404` para rutas inexistentes. También he creado el modelo `Book`, con validaciones para sus campos, y una semilla idempotente que carga los 1.000 registros de `products.json` sin generar duplicados al ejecutarla varias veces. El CRUD, los filtros y las evidencias se incorporarán en los siguientes hitos.
 
 ## 17. Conclusión
 

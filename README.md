@@ -163,7 +163,7 @@ En mis anteriores APIs inspiradas en Taylor Swift ya había gestionado volúmene
 
 El scraper seguirá funcionando de forma independiente y `products.json` continuará siendo su salida obligatoria. Sobre ese resultado desarrollaré una segunda fase con los siguientes objetivos:
 
-- cargar `products.json` en MongoDB mediante una semilla idempotente;
+- cargar `products.json` en MongoDB mediante una semilla idempotente, sin duplicar libros al repetirla;
 - evitar duplicados utilizando la URL original de cada libro;
 - crear un modelo `Book` con validaciones de Mongoose;
 - exponer un CRUD completo con Express;
