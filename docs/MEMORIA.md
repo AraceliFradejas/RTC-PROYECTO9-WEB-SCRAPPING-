@@ -289,7 +289,7 @@ El test runner confirma cuatro pruebas superadas y ningún fallo.
 
 ![Resultado de npm test con cuatro pruebas superadas](../screenshots/08-pruebas.png)
 
-No incluyo capturas de MongoDB Atlas ni Insomnia porque el proyecto actual no utiliza base de datos ni expone una API. Añadir esas herramientas sin una funcionalidad que las necesite no demostraría el objetivo principal del ejercicio.
+Estas ocho capturas documentan exclusivamente el scraping obligatorio. Las evidencias de MongoDB Atlas e Insomnia se incorporarán en el anexo experimental cuando la API esté implementada y probada.
 
 ## 13. Dificultades y decisiones
 
@@ -329,10 +329,37 @@ Finalmente, he comprobado el valor de separar responsabilidades y probar las fun
 - permitir configurar URL, pausa y archivo de salida mediante argumentos;
 - crear pruebas de integración con una página HTML local;
 - generar un resumen estadístico como archivo independiente;
-- almacenar los productos en MongoDB y construir un CRUD solamente como ampliación posterior;
 - documentar tiempos de ejecución en distintos entornos.
 
-## 16. Conclusión
+## 16. Anexo: continuando la práctica de lo ya aprendido
+
+Tras completar y verificar el scraper, he decidido utilizar sus resultados para continuar practicando MongoDB y API REST con un conjunto diferente y más voluminoso de datos.
+
+Esta ampliación parte de mi experiencia en APIs anteriores inspiradas en Taylor Swift. En el proyecto sobre *The Eras Tour* trabajé con 149 conciertos y 238 canciones relacionadas. Los 1.000 libros actuales me permitirán observar el funcionamiento de una semilla idempotente, las consultas paginadas y los filtros sobre una colección de mayor tamaño.
+
+### Objetivos del anexo
+
+- conectar la aplicación con MongoDB Atlas mediante Mongoose;
+- crear un modelo `Book` basado en la estructura de `products.json`;
+- importar los libros sin duplicarlos cuando repita la semilla;
+- implementar un CRUD completo con Express;
+- paginar las consultas de lectura;
+- filtrar por nombre, precio y valoración;
+- calcular estadísticas del conjunto de datos;
+- probar y documentar los endpoints con Insomnia;
+- añadir evidencias reales de MongoDB Atlas e Insomnia.
+
+### Alcance y separación
+
+El anexo es voluntario y no altera el resultado del scraping. `products.json` seguirá siendo la salida obligatoria y funcionará sin MongoDB. La base de datos consumirá ese archivo como fuente para su semilla.
+
+No utilizaré Cloudinary para las portadas. Las imágenes ya tienen URLs absolutas y volver a alojar 1.000 archivos aumentaría el consumo de recursos, duplicaría contenido ajeno y no aportaría valor al objetivo de esta práctica.
+
+### Estado
+
+En esta versión he definido el alcance del anexo. La implementación de MongoDB y la API REST se realizará en hitos posteriores, manteniendo commits separados para configuración, semilla, CRUD, filtros, pruebas y evidencias.
+
+## 17. Conclusión
 
 He completado el objetivo principal: el scraper recorre por sí mismo toda la paginación de Books to Scrape, extrae los productos y genera `products.json`. El resultado contiene 1.000 libros válidos y sin URLs duplicadas.
 
