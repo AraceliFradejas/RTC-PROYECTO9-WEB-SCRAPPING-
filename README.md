@@ -178,6 +178,12 @@ Mantendré las URLs originales de las imágenes y no las copiaré a Cloudinary. 
 - Node.js
 - JavaScript
 - Puppeteer
+- Express
+- MongoDB Atlas
+- Mongoose
+- dotenv
+- CORS
+- Morgan
 - JSON
 - Git y GitHub
 
@@ -203,11 +209,31 @@ Para comprobar la validación sin abrir el navegador puedo ejecutar las pruebas 
 npm test
 ```
 
+La ampliación de la API se inicia después de configurar `MONGODB_URI`:
+
+```bash
+npm run api
+```
+
+Durante el desarrollo puedo utilizar el modo de recarga automática incluido en Node.js:
+
+```bash
+npm run dev
+```
+
 ## Estructura
 
 ```text
 .
 ├── src/
+│   ├── api/
+│   │   ├── config/
+│   │   │   └── database.js
+│   │   ├── middleware/
+│   │   │   ├── errorHandler.js
+│   │   │   └── notFoundHandler.js
+│   │   ├── app.js
+│   │   └── server.js
 │   ├── config/
 │   │   └── scraperConfig.js
 │   ├── services/
@@ -219,14 +245,16 @@ npm test
 │   │   └── validateProducts.js
 │   └── scraper.js
 ├── tests/
+│   ├── apiHealth.test.js
 │   └── validateProducts.test.js
+├── .env.example
 ├── products.json
 ├── package-lock.json
 ├── package.json
 └── README.md
 ```
 
-`scraper.js` coordina el flujo general y cada módulo se ocupa de una responsabilidad concreta. La configuración centraliza URLs, selectores y tiempos; el servicio de extracción trabaja con el DOM; y las utilidades gestionan modales, paginación, validación y escritura del archivo.
+`scraper.js` coordina el flujo del scraping y cada módulo se ocupa de una responsabilidad concreta. La carpeta `api` contiene una aplicación Express independiente, la conexión con MongoDB, los middlewares y el servidor.
 
 ## Memoria y evidencias
 
@@ -243,7 +271,7 @@ He documentado el proceso en [`docs/MEMORIA.md`](docs/MEMORIA.md), siguiendo la 
 - resultados finales;
 - conclusiones y posibles mejoras.
 
-Las evidencias se añadirán cuando las acciones correspondientes se hayan realizado. Está previsto documentar:
+Las evidencias del scraping ya documentan:
 
 1. La página inicial de Books to Scrape.
 2. La inspección de una tarjeta de producto.

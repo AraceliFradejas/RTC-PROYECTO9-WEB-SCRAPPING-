@@ -5,6 +5,8 @@
   "type": "module",
   "main": "src/scraper.js",
   "scripts": {
+    "api": "node src/api/server.js",
+    "dev": "node --watch src/api/server.js",
     "scrape": "node src/scraper.js",
     "test": "node --test"
   },
@@ -20,6 +22,11 @@
   "author": "Araceli Fradejas Muñoz",
   "license": "MIT",
   "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mongoose": "^9.9.4",
+    "morgan": "^1.12.0",
     "puppeteer": "^25.9.0"
   }
 }
